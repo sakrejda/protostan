@@ -1,0 +1,9 @@
+*.a
+*.la
+*.so
+*.so.*
+*.pc
+include/*
+lib/pkgconfig/*
+src/cpp/*
+src/python/*

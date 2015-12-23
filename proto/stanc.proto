@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package stan.proto;
+
+// This one is straightforward in the sense that it should just match
+// what CmdStan/etc... do. 
+message StanCompileRequest {
+  string model_name = 1;
+  string model_code = 2;
+  string model_file_name = 3;
+}
+
+// Pretty straight-up stanc, with a state flag:
+message StanCompileResponse {
+  enum State {
+    UNKNOWN = 0;     // default in case of bad set value.
+    INCOMPLETE = 1;  // compilation is not finished.
+    SUCCESS = 2;     // compilation succeeded
+    WARN = 3;        // compilation succeeded, check message for issues.
+    ERROR = 4;       // compilation failed, check message for errors.
+  }
+  State state = 2;
+  string cpp_code = 3;
+  string messages = 4;
+//  StanVersion stan_version = 5;  ... not now....
+}
+

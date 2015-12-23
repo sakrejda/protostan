@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package stan.proto;
+import "stanc.proto"
+
+service CompileService {
+  rpc CompileProgram(StanCompileRequest) returns (StanCompileResponse) {}
+}
+
+
