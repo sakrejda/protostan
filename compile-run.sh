@@ -8,6 +8,11 @@ git clone https://github.com/sakrejda/protostan.git
 cd $ROOT/protostan
 git submodule update --init --recursive
 
+## Generate stan library:
+cd $ROOT/lib/stan
+make bin/libstanc.a
+mv $ROOT/lib/stan/bin/libstanc.a $ROOT/lib/
+
 # To generate the protoc compiler, do a local in-package-dir install 
 # so that protoc doesn't assume it can put its libraries into 
 # system directories.
@@ -35,5 +40,18 @@ g++ -I $ROOT/lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
     -pthread -o $ROOT/test/unit/gtest-test \
     $ROOT/src/cpp/test/gtest-test.cpp \
     $ROOT/lib/libgtest.a
+g++ -I $ROOT/lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
+    -I $ROOT/src/cpp \
+    -I $ROOT/lib/stan/src \
+    -I $ROOT/lib/protobuf/src \
+    -isystem $ROOT/lib/stan/lib/stan_math/lib/boost_1.58.0 \
+    -pthread \
+    -o $ROOT/test/unit/stanc-test \
+    $ROOT/src/cpp/test/stanc-test.cpp \
+    $ROOT/src/cpp/proto/stanc.pb.cc \
+    $ROOT/lib/libgtest.a \
+    $ROOT/lib/libstanc.a \
+    $ROOT/lib/libprotobuf.a
 $ROOT/test/unit/gtest-test
+$ROOT/test/unit/stanc-test
 
