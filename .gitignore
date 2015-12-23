@@ -6,3 +6,6 @@
 *.pc
 include/*
 lib/pkgconfig/*
+test/*
+test/*/*
+test/*/*/*
