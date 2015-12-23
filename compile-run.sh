@@ -8,7 +8,9 @@ git clone https://github.com/sakrejda/protostan.git
 cd $ROOT/protostan
 git submodule update --init --recursive
 
-# To generate the protoc compiler:
+# To generate the protoc compiler, do a local in-package-dir install 
+# so that protoc doesn't assume it can put its libraries into 
+# system directories.
 cd $ROOT/lib/protobuf
 ./autogen.sh
 ./configure --prefix=$ROOT
