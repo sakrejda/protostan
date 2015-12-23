@@ -6,5 +6,3 @@
 *.pc
 include/*
 lib/pkgconfig/*
-src/cpp/*
-src/python/*
