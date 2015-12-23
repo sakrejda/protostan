@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package stan.proto
+
+// This design follows the 'union types' techniques suggestion from 
+// https://developers.google.com/protocol-buffers/docs/techniques
+message StanMessage {
+  enum Type {
+    UNKNOWN = 0;
+    EMPTY = 1;
+    COMPILE_REQUEST = 2;
+    COMPILE_RESPONSE = 3;
+    COMPILE_CHECK = 4;
+  }
+  Type type = 1;
+  StanVersion stan_version = 2;
+  StanCompileRequest stan_compile_request = 3;
+  StanCompileResponse stan_compile_response = 4;
+}
+
+// Obvious?
+message StanVersion {
+  string version = 1;
+  string stan_math_hash = 2;
+  string stan_stan_hash = 3;
+}
+
+
+
