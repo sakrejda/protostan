@@ -2,3 +2,6 @@
 	path = lib/protobuf
 	url = https://github.com/google/protobuf.git
 	branch = v3.0.0-beta-2
+[submodule "lib/stan"]
+	path = lib/stan
+	url = https://github.com/stan-dev/stan.git

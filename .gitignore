@@ -1,6 +1,7 @@
 *.a
 *.la
 *.so
+*.o
 *.so.*
 *.pc
 include/*
