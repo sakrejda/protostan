@@ -7,7 +7,7 @@
 namespace stan {
   namespace proto {
     stan::proto::StanCompileResponse compile( 
-      stan::proto::StanCompileRequest request) {
+      const stan::proto::StanCompileRequest& request) {
         stan::proto::StanCompileResponse response;
         std::ostringstream err_stream;
         std::istringstream stan_stream(request.model_code());

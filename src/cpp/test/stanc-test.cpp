@@ -10,7 +10,11 @@ TEST(stanc, minimumModelCompile) {
   request.set_model_file_name("test.stan");
   response = stan::proto::compile(request);
   std::cout << response.cpp_code() << std::endl;
-  EXPECT_EQ(1,1);
+  // FIXME: These tests are lame, but that's all that
+  // stan-dev/stan does... (?)
+  EXPECT_EQ(2, response.state());
+  EXPECT_EQ("", response.messages());
+  EXPECT_EQ(std::string::npos, response.cpp_code().find("int main("));
 }
 
 int main(int argc, char** argv) {
