@@ -1,10 +1,9 @@
-# Starting point:
-ROOT="/home/krzysztof/packages/protostan"
-cd $ROOT/..
 
 ## protobuf and stan are submodules, each has its own submodules...
 ## so to clone this mess.
 git clone https://github.com/sakrejda/protostan.git
+# At this point, define a $ROOT directory 
+# that's /whathever/something/protostan
 cd $ROOT/protostan
 git submodule update --init --recursive
 
