@@ -19,6 +19,10 @@ messages.  The advantages of this approach are:
 
 We would like to wrap enough of the API so that a first interface
 for a language could be written using protobuf without touching
-the C++ API.
+the C++ API.  For the time being this repository should contain:
+
+- Stan-related .proto files for other projects.
+- Versions of Stan external API functions with only protobuf 
+  messages as input and output types.
 
 
