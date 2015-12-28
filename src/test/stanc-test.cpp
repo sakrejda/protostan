@@ -4,12 +4,11 @@
 TEST(stanc, minimumModelCompile) {
   stan::proto::StanCompileRequest request;
   stan::proto::StanCompileResponse response;
-  
+
   request.set_model_name("test");
   request.set_model_code("model {}");
   request.set_model_file_name("test.stan");
   response = stan::proto::compile(request);
-  std::cout << response.cpp_code() << std::endl;
   // FIXME: These tests are lame, but that's all that
   // stan-dev/stan does... (?)
   EXPECT_EQ(2, response.state());
