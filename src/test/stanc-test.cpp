@@ -16,6 +16,20 @@ TEST(stanc, minimumModelCompile) {
   EXPECT_EQ(std::string::npos, response.cpp_code().find("int main("));
 }
 
+
+TEST(stanc, invalidModelCompile) {
+  stan::proto::StanCompileRequest request;
+  stan::proto::StanCompileResponse response;
+
+  request.set_model_name("test");
+  request.set_model_code("invalid model code");
+  request.set_model_file_name("test.stan");
+  response = stan::proto::compile(request);
+  EXPECT_EQ(4, response.state());
+  EXPECT_EQ("", response.messages());
+  EXPECT_EQ(std::string::npos, response.cpp_code().find("int main("));
+}
+
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   int returnValue;
