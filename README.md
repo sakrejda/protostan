@@ -26,3 +26,25 @@ the C++ API.  For the time being this repository should contain:
   messages as input and output types.
 
 
+Quickstart
+==========
+
+1. Clone repository and submodules
+
+```
+git clone https://github.com/sakrejda/protostan.git
+cd protostan
+git submodule update --init --recursive
+```
+
+2. Ensure static libraries exist
+
+```
+make libraries
+```
+
+3. Run tests
+
+```
+make test
+```
