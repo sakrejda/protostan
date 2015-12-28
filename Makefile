@@ -11,14 +11,14 @@ test: libraries generated test-binaries
 	test/unit/gtest-test
 	test/unit/stanc-test
 
-test/unit/gtest-test:
+test/unit/gtest-test: src/test/gtest-test.cpp
 	mkdir -p test/unit
 	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-pthread -o test/unit/gtest-test \
 			src/test/gtest-test.cpp \
 			lib/libgtest.a
 
-test/unit/stanc-test:
+test/unit/stanc-test: src/test/stanc-test.cpp
 	mkdir -p test/unit
 	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
