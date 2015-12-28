@@ -9,3 +9,4 @@ lib/pkgconfig/*
 test/*
 test/*/*
 test/*/*/*
+src/proto
