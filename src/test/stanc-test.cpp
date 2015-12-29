@@ -4,15 +4,28 @@
 TEST(stanc, minimumModelCompile) {
   stan::proto::StanCompileRequest request;
   stan::proto::StanCompileResponse response;
-  
+
   request.set_model_name("test");
   request.set_model_code("model {}");
   request.set_model_file_name("test.stan");
   response = stan::proto::compile(request);
-  std::cout << response.cpp_code() << std::endl;
   // FIXME: These tests are lame, but that's all that
   // stan-dev/stan does... (?)
   EXPECT_EQ(2, response.state());
+  EXPECT_EQ("", response.messages());
+  EXPECT_EQ(std::string::npos, response.cpp_code().find("int main("));
+}
+
+
+TEST(stanc, invalidModelCompile) {
+  stan::proto::StanCompileRequest request;
+  stan::proto::StanCompileResponse response;
+
+  request.set_model_name("test");
+  request.set_model_code("invalid model code");
+  request.set_model_file_name("test.stan");
+  response = stan::proto::compile(request);
+  EXPECT_EQ(4, response.state());
   EXPECT_EQ("", response.messages());
   EXPECT_EQ(std::string::npos, response.cpp_code().find("int main("));
 }
