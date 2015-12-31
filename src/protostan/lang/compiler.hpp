@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <proto/stanc.pb.h>
+#include <stan/proto/stanc.pb.h>
 #include <stan/lang/compiler.hpp>
 
 namespace stan {

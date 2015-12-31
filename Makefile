@@ -4,7 +4,7 @@ libraries: lib/libstan.a lib/libgtest.a lib/libprotobuf.a
 
 test-binaries: test/unit/gtest-test test/unit/stanc-test
 
-generated: src/proto/stanc.pb.cc
+generated: src/stan/proto/stanc.pb.cc
 
 test: libraries generated test-binaries
 	@echo running tests
@@ -28,7 +28,7 @@ test/unit/stanc-test: src/test/stanc-test.cpp
 			-pthread \
 			-o test/unit/stanc-test \
 			src/test/stanc-test.cpp \
-			src/proto/stanc.pb.cc \
+			src/stan/proto/stanc.pb.cc \
 			lib/libgtest.a \
 			lib/libstanc.a \
 			lib/libprotobuf.a
@@ -48,7 +48,7 @@ lib/libstan.a: lib/stan
 	$(MAKE) -C lib/stan bin/libstanc.a
 	cp lib/stan/bin/libstanc.a lib
 
-src/proto/stanc.pb.cc: proto/stanc.proto
-	lib/protobuf/src/protoc --cpp_out=src ./proto/stanc.proto
+src/stan/proto/stanc.pb.cc: proto/stanc.proto
+	lib/protobuf/src/protoc --cpp_out=src/stan ./proto/stanc.proto
 
 .PHONY: test
