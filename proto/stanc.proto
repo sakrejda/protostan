@@ -2,26 +2,27 @@ syntax = "proto3";
 
 package stan.proto;
 
-// This one is straightforward in the sense that it should just match
-// what CmdStan/etc... do. 
+/**
+ * Input for stan::lang::compile wrapper.  
+ */
 message StanCompileRequest {
-  string model_name = 1;
-  string model_code = 2;
-  string model_file_name = 3;
+  string model_name = 1;      /// Name of the Stan model.
+  string model_code = 2;      /// Stan-language code for the model.
+  string model_file_name = 3; /// Name of the Stan model file, for error messages.
 }
 
-// Pretty straight-up stanc, with a state flag:
+/**
+ * Output from stan::lang::compile wrapper.  
+ */
 message StanCompileResponse {
   enum State {
-    UNKNOWN = 0;     // default in case of bad set value.
-    INCOMPLETE = 1;  // compilation is not finished.
-    SUCCESS = 2;     // compilation succeeded
-    WARN = 3;        // compilation succeeded, check message for issues.
-    ERROR = 4;       // compilation failed, check message for errors.
+    UNKNOWN = 0;     /// Default value in case of bad set value.
+    INCOMPLETE = 1;  /// Indicates compilation is not finished, resend StanCompileRequest
+    SUCCESS = 2;     /// Indicates compilation succeeded, check messages for warnings.
+    ERROR = 3;       /// Indicates compilation failed, check messages for errors.
   }
-  State state = 2;
-  string cpp_code = 3;
-  string messages = 4;
-//  StanVersion stan_version = 5;  ... not now....
+  State state = 1;     /// Return code for compilation request.
+  string cpp_code = 2; /// C++ code for the model provided in StanCompileRequest.
+  string messages = 3; /// Check for Stan compiler warnings or errors.
 }
 
