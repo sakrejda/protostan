@@ -19,10 +19,7 @@ namespace stan {
           stan_stream, cpp_stream,
           request.model_name(), request.model_file_name());
         if (valid_model) {
-          if (err_stream.tellp() == 0)
-            response.set_state(stan::proto::StanCompileResponse::SUCCESS);
-          else
-            response.set_state(stan::proto::StanCompileResponse::WARN);
+          response.set_state(stan::proto::StanCompileResponse::SUCCESS);
         } else {
           response.set_state(stan::proto::StanCompileResponse::ERROR);
         }
