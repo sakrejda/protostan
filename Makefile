@@ -22,6 +22,7 @@ test/unit/stanc-test: src/test/stanc-test.cpp
 	mkdir -p test/unit
 	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
+			-I src/stan \
 			-I lib/stan/src \
 			-I lib/protobuf/src \
 			-isystem lib/stan/lib/stan_math/lib/boost_1.58.0 \
