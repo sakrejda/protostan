@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include <stan/proto/stanc.pb.h>
 #include <protostan/lang/compiler.hpp>
 
 TEST(stanc, minimumModelCompile) {
@@ -11,7 +12,7 @@ TEST(stanc, minimumModelCompile) {
   response = stan::proto::compile(request);
   // FIXME: These tests are lame, but that's all that
   // stan-dev/stan does... (?)
-  EXPECT_EQ(2, response.state());
+  EXPECT_EQ(stan::proto::StanCompileResponse::SUCCESS, response.state());
   EXPECT_EQ("", response.messages());
   EXPECT_EQ(std::string::npos, response.cpp_code().find("int main("));
 }
@@ -25,7 +26,7 @@ TEST(stanc, invalidModelCompile) {
   request.set_model_code("invalid model code");
   request.set_model_file_name("test.stan");
   response = stan::proto::compile(request);
-  EXPECT_EQ(4, response.state());
+  EXPECT_EQ(stan::proto::StanCompileResponse::ERROR, response.state());
   EXPECT_EQ("", response.messages());
   EXPECT_EQ(std::string::npos, response.cpp_code().find("int main("));
 }
