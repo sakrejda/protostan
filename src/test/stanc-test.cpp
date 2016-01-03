@@ -18,7 +18,6 @@ TEST(stanc, minimumModelCompile) {
   EXPECT_NE(std::string::npos, response.cpp_code().find("class test"));
 }
 
-
 TEST(stanc, invalidModelCompile) {
   stan::proto::StanCompileRequest request;
   stan::proto::StanCompileResponse response;
@@ -39,6 +38,3 @@ int main(int argc, char** argv) {
   returnValue = RUN_ALL_TESTS();
   return returnValue;
 }
-
-
-
