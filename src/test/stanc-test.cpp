@@ -32,6 +32,20 @@ TEST(stanc, invalidModelCompile) {
   EXPECT_NE(std::string::npos, response.messages().find("PARSER EXPECTED: <model declaration"));
 }
 
+TEST(stanc, noSuchDistributionModelCompile) {
+  stan::proto::StanCompileRequest request;
+  stan::proto::StanCompileResponse response;
+
+  request.set_model_name("test");
+  request.set_model_code("parameters {real z;} model {z ~ no_such_distribution();}");
+  request.set_model_file_name("");
+  response = stan::proto::compile(request);
+  EXPECT_EQ(stan::proto::StanCompileResponse::ERROR, response.state());
+  EXPECT_STREQ("", response.cpp_code().c_str());
+  EXPECT_STRNE("", response.messages().c_str());
+  EXPECT_NE(std::string::npos, response.messages().find("Distribution no_such_distribution not found."));
+}
+
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   int returnValue;
