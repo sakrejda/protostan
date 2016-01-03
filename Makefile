@@ -2,21 +2,13 @@ default: test
 
 libraries: lib/libstan.a lib/libgtest.a lib/libprotobuf.a
 
-test-binaries: test/unit/gtest-test test/unit/stanc-test
+test-binaries: test/unit/stanc-test
 
 generated: src/stan/proto/stanc.pb.cc
 
 test: libraries generated test-binaries
 	@echo running tests
-	test/unit/gtest-test
 	test/unit/stanc-test
-
-test/unit/gtest-test: src/test/gtest-test.cpp
-	mkdir -p test/unit
-	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
-			-pthread -o test/unit/gtest-test \
-			src/test/gtest-test.cpp \
-			lib/libgtest.a
 
 test/unit/stanc-test: src/test/stanc-test.cpp
 	mkdir -p test/unit
