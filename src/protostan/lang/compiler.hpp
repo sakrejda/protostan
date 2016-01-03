@@ -14,20 +14,21 @@ namespace stan {
       std::istringstream stan_stream(request.model_code());
       std::ostringstream cpp_stream;
 
+      response.set_state(stan::proto::StanCompileResponse::ERROR);
       try {
         bool valid_model = stan::lang::compile(&err_stream,
-          stan_stream, cpp_stream,
-          request.model_name(), request.model_file_name());
+                                               stan_stream,
+                                               cpp_stream,
+                                               request.model_name(),
+                                               request.model_file_name());
+        response.set_messages(err_stream.str());
         if (valid_model) {
           response.set_state(stan::proto::StanCompileResponse::SUCCESS);
-        } else {
-          response.set_state(stan::proto::StanCompileResponse::ERROR);
+          response.set_cpp_code(cpp_stream.str());
         }
       } catch(const std::exception& e) {
-        response.set_state(stan::proto::StanCompileResponse::ERROR);
+        response.set_messages(e.what());
       }
-      response.set_messages(err_stream.str());
-      response.set_cpp_code(cpp_stream.str());
       return response;
     }
   }
