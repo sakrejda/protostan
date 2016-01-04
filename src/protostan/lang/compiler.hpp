@@ -18,8 +18,7 @@ namespace stan {
         bool valid_model = stan::lang::compile(&err_stream,
                                                stan_stream,
                                                cpp_stream,
-                                               request.model_name(),
-                                               request.model_file_name());
+                                               request.model_name());
         response.set_messages(err_stream.str());
         if (valid_model) {
           response.set_state(stan::proto::StanCompileResponse::SUCCESS);
