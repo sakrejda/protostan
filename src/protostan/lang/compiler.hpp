@@ -1,14 +1,13 @@
+#include <stan/proto/stanc.pb.h>
+#include <stan/lang/compiler.hpp>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <stan/proto/stanc.pb.h>
-#include <stan/lang/compiler.hpp>
 
 namespace stan {
   namespace proto {
     stan::proto::StanCompileResponse compile(
       const stan::proto::StanCompileRequest& request) {
-
       stan::proto::StanCompileResponse response;
       std::ostringstream err_stream;
       std::istringstream stan_stream(request.model_code());
