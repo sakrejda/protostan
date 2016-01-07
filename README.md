@@ -25,6 +25,11 @@ the C++ API.  For the time being this repository should contain:
 - Versions of Stan external API functions with only protobuf 
   messages as input and output types.
 
+Location of Protocol Buffer Message Definitions
+===============================================
+
+Message definitions are found in ``src/stan/proto``.
+
 
 Quickstart
 ==========
