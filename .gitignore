@@ -10,4 +10,5 @@ lib/pkgconfig/*
 test/*
 test/*/*
 test/*/*/*
-src/stan/proto
+src/stan/proto/*.pb.cc
+src/stan/proto/*.pb.h
