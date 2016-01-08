@@ -16,7 +16,6 @@ test/unit/stanc-test: src/test/stanc-test.cpp
 	mkdir -p test/unit
 	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
-			-I src/stan \
 			-I lib/stan/src \
 			-I lib/protobuf/src \
 			-isystem lib/stan/lib/stan_math/lib/boost_1.58.0 \
@@ -43,8 +42,8 @@ lib/libstan.a: lib/stan
 	$(MAKE) -C lib/stan bin/libstanc.a
 	cp lib/stan/bin/libstanc.a lib
 
-src/stan/proto/stanc.pb.cc: proto/stanc.proto
-	lib/protobuf/src/protoc --cpp_out=src/stan ./proto/stanc.proto
+src/stan/proto/stanc.pb.cc: src/stan/proto/stanc.proto
+	cd src && ../lib/protobuf/src/protoc --cpp_out=. stan/proto/stanc.proto
 
 .PHONY: cpplint
 cpplint:
