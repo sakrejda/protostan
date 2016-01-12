@@ -7,12 +7,11 @@ test-binaries: test/unit/stanc-test
 
 generated: src/stan/proto/stanc.pb.cc
 
-.PHONY: test
 test: cpplint libraries generated test-binaries
 	@echo running tests
 	test/unit/stanc-test
 
-test/unit/stanc-test: src/test/stanc-test.cpp
+test/unit/stanc-test: src/test/stanc-test.cpp src/protostan/lang/compiler.hpp
 	mkdir -p test/unit
 	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
@@ -45,7 +44,7 @@ lib/libstan.a: lib/stan
 src/stan/proto/stanc.pb.cc: src/stan/proto/stanc.proto
 	cd src && ../lib/protobuf/src/protoc --cpp_out=. stan/proto/stanc.proto
 
-.PHONY: cpplint
 cpplint:
-	python lib/stan/lib/stan_math/lib/cpplint_4.45/cpplint.py --output=vs7 --counting=detailed --root=src --extension=hpp,cpp --filter=-runtime/indentation_namespace,-readability/namespace,-legal/copyright,-whitespace/indent,-runtime/reference $(shell find src/protostan -name '*.hpp' -o -name '*.cpp')
+	python2 lib/stan/lib/stan_math/lib/cpplint_4.45/cpplint.py --output=vs7 --counting=detailed --root=src --extension=hpp,cpp --filter=-runtime/indentation_namespace,-readability/namespace,-legal/copyright,-whitespace/indent,-runtime/reference $(shell find src/protostan -name '*.hpp' -o -name '*.cpp')
 
+.PHONY: cpplint test
