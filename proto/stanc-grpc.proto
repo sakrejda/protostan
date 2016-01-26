@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package stan.proto;
-import "stanc.proto"
+import "compile.proto"
 
 service CompileService {
   rpc CompileProgram(StanCompileRequest) returns (StanCompileResponse) {}
