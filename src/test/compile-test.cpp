@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
-#include <stan/proto/stanc.pb.h>
+#include <stan/proto/compile.pb.h>
 #include <protostan/lang/compiler.hpp>
 
-TEST(stanc, minimumModelCompile) {
+TEST(compile, minimumModelCompile) {
   stan::proto::StanCompileRequest request;
   stan::proto::StanCompileResponse response;
 
@@ -18,7 +18,7 @@ TEST(stanc, minimumModelCompile) {
   EXPECT_NE(std::string::npos, response.cpp_code().find("class test"));
 }
 
-TEST(stanc, invalidModelCompile) {
+TEST(compile, invalidModelCompile) {
   stan::proto::StanCompileRequest request;
   stan::proto::StanCompileResponse response;
 
@@ -32,7 +32,7 @@ TEST(stanc, invalidModelCompile) {
   EXPECT_NE(std::string::npos, response.messages().find("PARSER EXPECTED: <model declaration"));
 }
 
-TEST(stanc, noSuchDistributionModelCompile) {
+TEST(compile, noSuchDistributionModelCompile) {
   stan::proto::StanCompileRequest request;
   stan::proto::StanCompileResponse response;
 
