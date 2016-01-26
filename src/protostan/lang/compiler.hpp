@@ -1,4 +1,4 @@
-#include <stan/proto/stanc.pb.h>
+#include <stan/proto/compile.pb.h>
 #include <stan/lang/compiler.hpp>
 #include <iostream>
 #include <sstream>
