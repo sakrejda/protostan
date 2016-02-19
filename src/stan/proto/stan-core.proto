@@ -22,6 +22,9 @@ message StanMessage {
   StanVersion stan_version = 2; 
   StanCompileRequest stan_compile_request = 3;   
   StanCompileResponse stan_compile_response = 4;
+  StanParameterOutput stan_parameter_output = 5;
+  StanIntegerOutput stan_integer_output = 6;
+  StanStringOutput stan_string_output = 7;
 }
 
 /** 
