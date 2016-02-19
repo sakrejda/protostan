@@ -8,7 +8,6 @@ package stan.proto;
 message StanCompileRequest {
   string model_name = 1;      /// Name of the Stan model.
   string model_code = 2;      /// Stan-language code for the model.
-  string model_file_name = 3; /// Name of the Stan model file, for error messages.
 }
 
 /**
