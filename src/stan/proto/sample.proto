@@ -2,10 +2,6 @@ syntax = "proto3";
 
 package stan.proto;
 
-/** 
- * Union-type message for holding Stan output.
-
-
 /**
  * Output for a parameter-by-parameter writer.
  */
