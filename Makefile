@@ -41,7 +41,7 @@ lib/libstanc.a: lib/stan
 	$(MAKE) -C lib/stan bin/libstanc.a
 	cp lib/stan/bin/libstanc.a lib
 
-src/stan/proto/compile.pb.cc: proto/compile.proto
+src/stan/proto/compile.pb.cc:
 	cd src && ../lib/protobuf/src/protoc --cpp_out=. stan/proto/compile.proto
 
 cpplint:
