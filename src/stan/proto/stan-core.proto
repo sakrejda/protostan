@@ -2,27 +2,39 @@ syntax = "proto3";
 
 package stan.proto
 
-// This design follows the 'union types' techniques suggestion from 
-// https://developers.google.com/protocol-buffers/docs/techniques
+/** 
+ * Union-type message for holding other messages and simplifying packing
+ * messages for serialization.  This design follows the 'union types' 
+ * techniques suggestion from:
+ * https://developers.google.com/protocol-buffers/docs/techniques
+ */
 message StanMessage {
   enum Type {
-    UNKNOWN = 0;
-    EMPTY = 1;
-    COMPILE_REQUEST = 2;
-    COMPILE_RESPONSE = 3;
-    COMPILE_CHECK = 4;
+    UNKNOWN = 0;   // Default value in case of bad set value.
+    EMPTY = 1;     // Indicates there is no message.
+    COMPILE_REQUEST = 2;   // Request to compile a Stan program to C++
+    COMPILE_RESPONSE = 3;  // Compilation request response, C++ code.
+    PARAMETER_OUTPUT = 4;  // Single-iteration of parameter output.
+    MESSAGE_STRING_OUTPUT = 5;    // Single string message.
+    MESSAGE_INTEGER_OUTPUT = 6;   // Single integer message.
   }
-  Type type = 1;
-  StanVersion stan_version = 2;
-  StanCompileRequest stan_compile_request = 3;
+  Type type = 1;  // Type of actual message held.
+  StanVersion stan_version = 2; 
+  StanCompileRequest stan_compile_request = 3;   
   StanCompileResponse stan_compile_response = 4;
+  StanParameterOutput stan_parameter_output = 5;
+  StanIntegerOutput stan_integer_output = 6;
+  StanStringOutput stan_string_output = 7;
 }
 
-// Obvious?
+/** 
+  * Version of the Stan components.  Used to indicate which version
+  * produced/processed a message.
+  */
 message StanVersion {
-  string version = 1;
-  string stan_math_hash = 2;
-  string stan_stan_hash = 3;
+  string version = 1;          // Version string.
+  string stan_math_hash = 2;   // git hash from math library
+  string stan_stan_hash = 3;   // git hash from language library
 }
 
 
