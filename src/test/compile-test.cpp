@@ -8,7 +8,6 @@ TEST(compile, minimumModelCompile) {
 
   request.set_model_name("test");
   request.set_model_code("model {}");
-  request.set_model_file_name("test.stan");
   response = stan::proto::compile(request);
   EXPECT_EQ(stan::proto::StanCompileResponse::SUCCESS, response.state());
   EXPECT_STREQ("", response.messages().c_str());
@@ -24,7 +23,6 @@ TEST(compile, invalidModelCompile) {
 
   request.set_model_name("test");
   request.set_model_code("invalid model code");
-  request.set_model_file_name("test.stan");
   response = stan::proto::compile(request);
   EXPECT_EQ(stan::proto::StanCompileResponse::ERROR, response.state());
   EXPECT_STREQ("", response.cpp_code().c_str());
@@ -38,7 +36,6 @@ TEST(compile, noSuchDistributionModelCompile) {
 
   request.set_model_name("test");
   request.set_model_code("parameters {real z;} model {z ~ no_such_distribution();}");
-  request.set_model_file_name("");
   response = stan::proto::compile(request);
   EXPECT_EQ(stan::proto::StanCompileResponse::ERROR, response.state());
   EXPECT_STREQ("", response.cpp_code().c_str());
