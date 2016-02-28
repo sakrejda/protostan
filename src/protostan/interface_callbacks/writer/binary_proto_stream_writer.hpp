@@ -12,9 +12,9 @@ namespace stan {
     namespace writer {
 
       /**
-       * binary_proto_stream_writer_writer writes to an std::ostream.
+       * binary_proto_stream_writer writes to an std::ostream.
        */
-      class binary_proto_stream_writer_writer : public base_writer {
+      class binary_proto_stream_writer : public base_writer {
       public:
         /**
          * Constructor.
@@ -23,15 +23,14 @@ namespace stan {
          * @param key_value_prefix String to write before lines
          *   treated as comments.
          */
-        binary_proto_stream_writer_writer(std::ostream& output,
+        binary_proto_stream_writer(std::ostream& output,
                       const std::string& key_value_prefix = ""):
           output__(output), key_value_prefix__(key_value_prefix) {}
 
         void operator()(const std::string& key, double value) {
-          //output__ << key_value_prefix__ << key << " = " << value << std::endl;
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
           stan::proto::StanIntegerOutput parameter_output;
-          parameter_output.set_key(key); 
+          parameter_output.set_key(key);
           parameter_output.set_value(values);
           stan_message__.set_allocated_stan_parameter_output(&parameter_output);
           write_delimited_pb(stan_message__);
@@ -39,10 +38,9 @@ namespace stan {
         }
 
         void operator()(const std::string& key, int value) {
-          //output__ << key_value_prefix__ << key << " = " << value << std::endl;
           stan_message__.set_type(stan::proto::StanMessage::INTEGER_OUTPUT);
           stan::proto::StanIntegerOutput integer_output;
-          integer_output.set_key(key); 
+          integer_output.set_key(key);
           integer_output.set_value(values);
           stan_message__.set_allocated_stan_integer_output(&integer_output);
           write_delimited_pb(stan_message__);
@@ -66,12 +64,13 @@ namespace stan {
 
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
           stan::proto::StanParameterOutput parameter_output;
-          parameter_output.set_key(key); 
+          parameter_output.set_key(key);
 
           for (int n = 0; n < n_values; ++n) {
             parameter_output.set_indexing(0, n);
             parameter_output.set_value(values[n]);
-            stan_message__.set_allocated_stan_parameter_output(&parameter_output);
+            stan_message__.set_allocated_stan_parameter_output(
+              &parameter_output);
             write_delimited_pb(stan_message__);
             stan_message__.clear_stan_parameter_output();
           }
@@ -84,16 +83,16 @@ namespace stan {
 
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
           stan::proto::StanParameterOutput parameter_output;
-          parameter_output.set_key(key); 
+          parameter_output.set_key(key);
 
 
           for (int i = 0; i < n_rows; ++i) {
             for (int j = 0; j < n_cols; ++j) {
-              //key, i, j, values[i * n_cols + j];
               parameter_output.set_indexing(0, i);
               parameter_output.set_indexing(1, j);
               parameter_output.set_value(values[i * n_cols + j]);
-              stan_message__.set_allocated_stan_parameter_output(&parameter_output);
+              stan_message__.set_allocated_stan_parameter_output(
+                &parameter_output);
               write_delimited_pb(stan_message__);
               stan_message__.clear_stan_parameter_output();
             }
@@ -123,14 +122,16 @@ namespace stan {
           int idx = 0;
 
           for (std::vector<double>::const_iterator it = state.begin();
-               it != names.end(); ++it){
+               it != names.end(); ++it) {
             ++idx;
             stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
             stan::proto::StanParameterOutput parameter_output;
-            parameter_output.set_key("value"); /// FIXME: store names from above, reuse here.
+            // FIXME: store names from above, reuse here.
+            parameter_output.set_key("value");
             parameter_output.set_indexing(0, idx);
             parameter_output.set_value(*it);
-            stan_message__.set_allocated_stan_parameter_output(&parameter_output);
+            stan_message__.set_allocated_stan_parameter_output(
+              &parameter_output);
             write_delimited_pb(stan_message__);
             stan_message__.clear_stan_parameter_output();
           }
@@ -155,20 +156,20 @@ namespace stan {
         stan::proto::StanMessage stan_message__;
 
         // This follows: http://stackoverflow.com/a/22927149
-        // written by Kenton Varda.  
+        // written by Kenton Varda.
         bool write_delimited_pb(
           const google::protobuf::MessageLite& message
         ) {
           google::protobuf::io::CodedOutputStream output(output__);
           const int size = message.ByteSize();
-          output.WriteVarint32(size); 
-          
+          output.WriteVarint32(size);
+
           uint8_t* buffer = output.GetDirectBufferForNBytesAndAdvance(size);
-          if (buffer != NULL ) {
+          if (buffer != NULL) {
             message.SerializeWithCachedSizesToArray(buffer);
           } else {
             message.SerializeWithCachedSizes(&output);
-            if (output.HadError()) 
+            if (output.HadError())
               return false;
           }
           return true;
