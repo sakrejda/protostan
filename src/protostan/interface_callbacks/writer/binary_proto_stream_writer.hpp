@@ -1,7 +1,9 @@
 #ifndef STAN_INTERFACE_CALLBACKS_WRITER_JSONLINES_WRITER_HPP
 #define STAN_INTERFACE_CALLBACKS_WRITER_JSONLINES_WRITER_HPP
 
+#include <google/protobuf/io/zero_copy_stream.h>
 #include <stan/proto/sample.pb.h>
+#include <protostan/util/rw_delimited_pb.hpp>
 #include <stan/interface_callbacks/writer/base_writer.hpp>
 #include <ostream>
 #include <vector>
@@ -25,7 +27,7 @@ namespace stan {
          */
         binary_proto_stream_writer(std::ostream& output,
                       const std::string& key_value_prefix = ""):
-          output__(output), key_value_prefix__(key_value_prefix) {}
+          raw_output__(output), key_value_prefix__(key_value_prefix) {}
 
         void operator()(const std::string& key, double value) {
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
@@ -33,7 +35,7 @@ namespace stan {
           parameter_output.set_key(key);
           parameter_output.set_value(values);
           stan_message__.set_allocated_stan_parameter_output(&parameter_output);
-          write_delimited_pb(stan_message__);
+          write_delimited_pb(stan_message__, raw_output__);
           stan_message__.clear_stan_parameter_output();
         }
 
@@ -43,7 +45,7 @@ namespace stan {
           integer_output.set_key(key);
           integer_output.set_value(values);
           stan_message__.set_allocated_stan_integer_output(&integer_output);
-          write_delimited_pb(stan_message__);
+          write_delimited_pb(stan_message__, raw_output__);
           stan_message__.clear_stan_integer_output();
         }
 
@@ -53,7 +55,7 @@ namespace stan {
           string_output.set_key(key);
           string_output.set_value(message);
           stan_message__.set_allocated_stan_string_output(&string_output);
-          write_delimited_pb(stan_message__);
+          write_delimited_pb(stan_message__, raw_output__);
           stan_message__.clear_stan_string_output();
         }
 
@@ -71,7 +73,7 @@ namespace stan {
             parameter_output.set_value(values[n]);
             stan_message__.set_allocated_stan_parameter_output(
               &parameter_output);
-            write_delimited_pb(stan_message__);
+            write_delimited_pb(stan_message__, raw_output__);
             stan_message__.clear_stan_parameter_output();
           }
         }
@@ -93,7 +95,7 @@ namespace stan {
               parameter_output.set_value(values[i * n_cols + j]);
               stan_message__.set_allocated_stan_parameter_output(
                 &parameter_output);
-              write_delimited_pb(stan_message__);
+              write_delimited_pb(stan_message__, raw_output__);
               stan_message__.clear_stan_parameter_output();
             }
           }
@@ -112,7 +114,7 @@ namespace stan {
             string_output.set_indexing(0, idx);
             string_output.set_value(*it);
             stan_message__.set_allocated_stan_string_output(&string_output);
-            write_delimited_pb(stan_message__);
+            write_delimited_pb(stan_message__, raw_output__);
             stan_message__.clear_stan_string_output();
           }
         }
@@ -132,7 +134,7 @@ namespace stan {
             parameter_output.set_value(*it);
             stan_message__.set_allocated_stan_parameter_output(
               &parameter_output);
-            write_delimited_pb(stan_message__);
+            write_delimited_pb(stan_message__, raw_output__);
             stan_message__.clear_stan_parameter_output();
           }
         }
@@ -145,35 +147,15 @@ namespace stan {
           string_output.set_key("message");
           string_output.set_value(message);
           stan_message__.set_allocated_stan_string_output(&string_output);
-          write_delimited_pb(stan_message__);
+          write_delimited_pb(stan_message__, raw_output__);
           stan_message__.clear_stan_string_output();
         }
 
       private:
-//        std::ostream& output__;
-        google::protobuf::io::OstreamOutputStream output__;
+        google::protobuf::io::ZeroCopyOutputStream* raw_output__; 
         std::string key_value_prefix__;
         stan::proto::StanMessage stan_message__;
 
-        // This follows: http://stackoverflow.com/a/22927149
-        // written by Kenton Varda.
-        bool write_delimited_pb(
-          const google::protobuf::MessageLite& message
-        ) {
-          google::protobuf::io::CodedOutputStream output(output__);
-          const int size = message.ByteSize();
-          output.WriteVarint32(size);
-
-          uint8_t* buffer = output.GetDirectBufferForNBytesAndAdvance(size);
-          if (buffer != NULL) {
-            message.SerializeWithCachedSizesToArray(buffer);
-          } else {
-            message.SerializeWithCachedSizes(&output);
-            if (output.HadError())
-              return false;
-          }
-          return true;
-        }
       };
 
     }
