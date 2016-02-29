@@ -34,6 +34,7 @@ namespace stan {
 
       uint32_t size;
       if (!input.ReadVarint32(&size)) return false;
+      std::cout << "SIZE: " << size << std::endl;
 
       google::protobuf::io::CodedInputStream::Limit limit =
         input.PushLimit(size);
