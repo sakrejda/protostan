@@ -1,6 +1,8 @@
 syntax = "proto3";
 
-package stan.proto
+package stan.proto;
+import "sample.proto";
+import "compile.proto";
 
 /** 
  * Union-type message for holding other messages and simplifying packing

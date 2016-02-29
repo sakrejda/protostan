@@ -27,7 +27,7 @@ namespace stan {
     }
 
     bool read_delimited_pb(
-        google::protobuf::io::MessageLite* message,
+        google::protobuf::MessageLite* message,
         google::protobuf::io::ZeroCopyInputStream* raw_input
     ) {
       google::protobuf::io::CodedInputStream input(raw_input);
