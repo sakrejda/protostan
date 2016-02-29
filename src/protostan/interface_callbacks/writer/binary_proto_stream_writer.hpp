@@ -22,13 +22,13 @@ namespace stan {
          * Constructor.
          *
          * @param output std::ostream to write to
-         * @param key_value_prefix String to write before lines
-         *   treated as comments.
          */
-        binary_proto_stream_writer(std::ostream& output,
-            const std::string& key_value_prefix = ""):
-            key_value_prefix__(key_value_prefix) {
+        binary_proto_stream_writer(std::ostream& output) {
           raw_output__ = new google::protobuf::io::OstreamOutputStream(&output);   
+        }
+
+        ~binary_proto_stream_writer() {
+          delete raw_output__;
         }
 
         void operator()(const std::string& key, double value) {
@@ -52,13 +52,15 @@ namespace stan {
         }
 
         void operator()(const std::string& key, const std::string& value) {
+          bool success;
           stan_message__.set_type(stan::proto::StanMessage::STRING_OUTPUT);
-          stan::proto::StanStringOutput string_output;
-          string_output.set_key(key);
-          string_output.set_value(value);
-          stan_message__.set_allocated_stan_string_output(&string_output);
-          write_delimited_pb(stan_message__, raw_output__);
-          stan_message__.clear_stan_string_output();
+          stan::proto::StanStringOutput* string_output(stan_message__.mutable_stan_string_output());
+          string_output->set_key(key);
+          string_output->set_value(value);
+          std::cout << "BLAH: " << stan_message__.stan_string_output().key() << std::endl;
+          std::cout << "BLAH: " << stan_message__.stan_string_output().value() << std::endl;
+          success = write_delimited_pb(stan_message__, raw_output__);
+          if (!success) throw("Write failed.");
         }
 
         void operator()(const std::string& key,
@@ -154,7 +156,6 @@ namespace stan {
 
       private:
         google::protobuf::io::ZeroCopyOutputStream* raw_output__; 
-        std::string key_value_prefix__;
         stan::proto::StanMessage stan_message__;
 
       };

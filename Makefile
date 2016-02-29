@@ -8,10 +8,12 @@ test-binaries: test/unit/compile-test test/unit/binary_proto_stream_writer-test
 generated:
 	./lib/protobuf/src/protoc --cpp_out=src/stan/proto --proto_path=src/stan/proto src/stan/proto/*.proto
 
-test: libraries generated test-binaries cpplint
+test: libraries generated test-binaries 
 	@echo running tests
 	test/unit/compile-test
 	test/unit/binary_proto_stream_writer-test
+
+test-full: test cpplint
 
 test/unit/compile-test: src/test/compile-test.cpp
 	mkdir -p test/unit
@@ -39,6 +41,7 @@ test/unit/binary_proto_stream_writer-test: src/test/binary_proto_stream_writer-t
 			-o test/unit/binary_proto_stream_writer-test \
 			src/test/binary_proto_stream_writer-test.cpp \
 			src/stan/proto/stan-core.pb.cc \
+			src/stan/proto/compile.pb.cc \
 			src/stan/proto/sample.pb.cc \
 			lib/libgtest.a \
 			lib/libstanc.a \
