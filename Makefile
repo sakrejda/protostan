@@ -5,9 +5,10 @@ libraries: lib/libstanc.a lib/libgtest.a lib/libprotobuf.a
 
 test-binaries: test/unit/compile-test test/unit/binary_proto_stream_writer-test
 
-generated: src/stan/proto/compile.pb.cc src/stan/proto/sample.pb.cc
+generated:
+	./lib/protobuf/src/protoc --cpp_out=src/stan/proto --proto_path=src/stan/proto src/stan/proto/*.proto
 
-test: cpplint libraries generated test-binaries
+test: libraries generated test-binaries cpplint
 	@echo running tests
 	test/unit/compile-test
 	test/unit/binary_proto_stream_writer-test
@@ -37,6 +38,7 @@ test/unit/binary_proto_stream_writer-test: src/test/binary_proto_stream_writer-t
 			-pthread \
 			-o test/unit/binary_proto_stream_writer-test \
 			src/test/binary_proto_stream_writer-test.cpp \
+			src/stan/proto/stan-core.pb.cc \
 			src/stan/proto/sample.pb.cc \
 			lib/libgtest.a \
 			lib/libstanc.a \
@@ -56,12 +58,6 @@ lib/libgtest.a: lib/stan
 lib/libstanc.a: lib/stan
 	$(MAKE) -C lib/stan bin/libstanc.a
 	cp lib/stan/bin/libstanc.a lib
-
-src/stan/proto/compile.pb.cc:
-	cd src && ../lib/protobuf/src/protoc --cpp_out=. stan/proto/compile.proto
-
-src/stan/proto/sample.pb.cc:
-	cd src && ../lib/protobuf/src/protoc --cpp_out=. stan/proto/sample.proto
 
 cpplint:
 	python2 lib/stan/lib/stan_math/lib/cpplint_4.45/cpplint.py --output=vs7 --counting=detailed --root=src --extension=hpp,cpp --filter=-runtime/indentation_namespace,-readability/namespace,-legal/copyright,-whitespace/indent,-runtime/reference $(shell find src/protostan -name '*.hpp' -o -name '*.cpp')
