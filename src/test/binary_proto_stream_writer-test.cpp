@@ -19,7 +19,7 @@ TEST(binaryProtoWriter,roundTripKeyString) {
   std::cout << "BLAH: " << store.str() << std::endl;
 
   success = stan::proto::read_delimited_pb(&pb, &read_stream);
-  if (!success) throw("Read failed.");
+  EXPECT_EQ(true, success);
   EXPECT_EQ(original_key, original_key);
   EXPECT_EQ(original_key, pb.stan_string_output().key());
   EXPECT_EQ(original_value, pb.stan_string_output().value());

@@ -13,7 +13,8 @@ namespace stan {
     ) {
       google::protobuf::io::CodedOutputStream output(raw_output);
       const int size = message.ByteSize();
-      output.WriteVarint32(size);
+      std::cout << "SIZE: " << size << std::endl;
+      //output.WriteVarint32(size);
 
       uint8_t* buffer = output.GetDirectBufferForNBytesAndAdvance(size);
       if (buffer != NULL) {
@@ -32,9 +33,12 @@ namespace stan {
     ) {
       google::protobuf::io::CodedInputStream input(raw_input);
 
-      uint32_t size;
-      if (!input.ReadVarint32(&size)) return false;
+      google::protobuf::uint32 size;
       std::cout << "SIZE: " << size << std::endl;
+      input.ReadVarint32(&size);
+      std::cout << "SIZE: " << size << std::endl;
+      if (!input.ReadVarint32(&size)) return false;
+      std::cout << "READ VARINT!" << std::endl;
 
       google::protobuf::io::CodedInputStream::Limit limit =
         input.PushLimit(size);
