@@ -5,11 +5,11 @@
 #include <fcntl.h>
 
 
-TEST(binaryProtoWriter, rw_delimited_pb) {
+TEST(binaryProtoWriter, rwDelimitedPb) {
   std::string original_key = "KEY";
   std::string original_value = "I AM YOUR STRING";
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-  int fd = open("/tmp/test-file.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
+  int fd = open("/tmp/test-rwDelimitedPb.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream;
   google::protobuf::io::FileInputStream* pb_istream;
   stan::proto::StanMessage pb, pb2;
@@ -25,7 +25,7 @@ TEST(binaryProtoWriter, rw_delimited_pb) {
   delete pb_ostream;
   close(fd);
 
-  fd = open("/tmp/test-file.pb", O_RDONLY); 
+  fd = open("/tmp/test-rwDelimitedPb.pb", O_RDONLY); 
   pb_istream = new google::protobuf::io::FileInputStream(fd);
   success = stan::proto::read_delimited_pb(&pb2, pb_istream);
   EXPECT_EQ(true, success);

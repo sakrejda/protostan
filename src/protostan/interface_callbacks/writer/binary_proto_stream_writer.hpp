@@ -19,36 +19,37 @@ namespace stan {
       class binary_proto_stream_writer : public base_writer {
       public:
         /**
-         * Constructor.
+         * Constructor. Takes ownership of the pointer argument.
          *
-         * @param output std::ostream to write to
+         * @param output pointer to std::ostream to write to.  The
+         *               object now owns the pointer and will delete on
+         *               destruction.  
          */
-        binary_proto_stream_writer(std::ostream& output) {
-          raw_output__ = new google::protobuf::io::OstreamOutputStream(&output);   
+        binary_proto_stream_writer(std::ostream* output) {
+          raw_output__ = new google::protobuf::io::OstreamOutputStream(output);   
+          flusher__ = output;
         }
 
         ~binary_proto_stream_writer() {
+          flusher__->flush();
           delete raw_output__;
+          delete flusher__;
         }
 
         void operator()(const std::string& key, double value) {
+          bool success;
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
-          stan::proto::StanParameterOutput parameter_output;
-          parameter_output.set_key(key);
-          parameter_output.set_value(value);
-          stan_message__.set_allocated_stan_parameter_output(&parameter_output);
-          write_delimited_pb(stan_message__, raw_output__);
-          stan_message__.clear_stan_parameter_output();
+          stan_message__.mutable_stan_parameter_output()->set_key(key);
+          stan_message__.mutable_stan_parameter_output()->set_value(value);
+          success = write_delimited_pb(stan_message__, raw_output__);
         }
 
         void operator()(const std::string& key, int value) {
+          bool success;
           stan_message__.set_type(stan::proto::StanMessage::INTEGER_OUTPUT);
-          stan::proto::StanIntegerOutput integer_output;
-          integer_output.set_key(key);
-          integer_output.set_value(value);
-          stan_message__.set_allocated_stan_integer_output(&integer_output);
-          write_delimited_pb(stan_message__, raw_output__);
-          stan_message__.clear_stan_integer_output();
+          stan_message__.mutable_stan_integer_output()->set_key(key);
+          stan_message__.mutable_stan_integer_output()->set_value(value);
+          success = write_delimited_pb(stan_message__, raw_output__);
         }
 
         void operator()(const std::string& key, const std::string& value) {
@@ -57,52 +58,45 @@ namespace stan {
           stan_message__.mutable_stan_string_output()->set_key(key);
           stan_message__.mutable_stan_string_output()->set_value(value);
           success = write_delimited_pb(stan_message__, raw_output__);
-          if (!success) throw("Write failed.");
         }
 
         void operator()(const std::string& key,
                         const double* values,
                         int n_values) {
+          bool success;
           if (n_values == 0) return;
 
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
-          stan::proto::StanParameterOutput parameter_output;
-          parameter_output.set_key(key);
+          stan_message__.mutable_stan_parameter_output()->set_key(key);
 
           for (int n = 0; n < n_values; ++n) {
-            parameter_output.set_indexing(0, n);
-            parameter_output.set_value(values[n]);
-            stan_message__.set_allocated_stan_parameter_output(
-              &parameter_output);
-            write_delimited_pb(stan_message__, raw_output__);
-            stan_message__.clear_stan_parameter_output();
+            stan_message__.mutable_stan_parameter_output()->set_indexing(0, n);
+            stan_message__.mutable_stan_parameter_output()->set_value(values[n]);
+            success = write_delimited_pb(stan_message__, raw_output__);
           }
         }
 
         void operator()(const std::string& key,
                         const double* values,
                         int n_rows, int n_cols) {
+          bool success;
           if (n_rows == 0 || n_cols == 0) return;
 
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
-          stan::proto::StanParameterOutput parameter_output;
-          parameter_output.set_key(key);
-
+          stan_message__.mutable_stan_parameter_output()->set_key(key);
 
           for (int i = 0; i < n_rows; ++i) {
             for (int j = 0; j < n_cols; ++j) {
-              parameter_output.set_indexing(0, i);
-              parameter_output.set_indexing(1, j);
-              parameter_output.set_value(values[i * n_cols + j]);
-              stan_message__.set_allocated_stan_parameter_output(
-                &parameter_output);
-              write_delimited_pb(stan_message__, raw_output__);
-              stan_message__.clear_stan_parameter_output();
+              stan_message__.mutable_stan_parameter_output()->set_indexing(0, i);
+              stan_message__.mutable_stan_parameter_output()->set_indexing(0, j);
+              stan_message__.mutable_stan_parameter_output()->set_value(values[i * n_cols + j]);
+              success = write_delimited_pb(stan_message__, raw_output__);
             }
           }
         }
 
         void operator()(const std::vector<std::string>& names) {
+          bool success;
           if (names.empty()) return;
           int idx = 0;
 
@@ -110,17 +104,15 @@ namespace stan {
                it != names.end(); ++it) {
             ++idx;
             stan_message__.set_type(stan::proto::StanMessage::STRING_OUTPUT);
-            stan::proto::StanStringOutput string_output;
-            string_output.set_key("name");
-            string_output.set_indexing(0, idx);
-            string_output.set_value(*it);
-            stan_message__.set_allocated_stan_string_output(&string_output);
-            write_delimited_pb(stan_message__, raw_output__);
-            stan_message__.clear_stan_string_output();
+            stan_message__.mutable_stan_string_output()->set_key("name");
+            stan_message__.mutable_stan_string_output()->set_indexing(0, idx);
+            stan_message__.mutable_stan_string_output()->set_value(*it);
+            success = write_delimited_pb(stan_message__, raw_output__);
           }
         }
 
         void operator()(const std::vector<double>& state) {
+          bool success;
           if (state.empty()) return;
           int idx = 0;
 
@@ -128,30 +120,25 @@ namespace stan {
                it != state.end(); ++it) {
             ++idx;
             stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
-            stan::proto::StanParameterOutput parameter_output;
-            parameter_output.set_key("value");
-            parameter_output.set_indexing(0, idx);
-            parameter_output.set_value(*it);
-            stan_message__.set_allocated_stan_parameter_output(
-              &parameter_output);
-            write_delimited_pb(stan_message__, raw_output__);
-            stan_message__.clear_stan_parameter_output();
+            stan_message__.mutable_stan_parameter_output()->set_key("value");
+            stan_message__.mutable_stan_parameter_output()->set_indexing(0, idx);
+            stan_message__.mutable_stan_parameter_output()->set_value(*it);
+            success = write_delimited_pb(stan_message__, raw_output__);
           }
         }
 
         void operator()() { }
 
         void operator()(const std::string& message) {
+          bool success;
           stan_message__.set_type(stan::proto::StanMessage::STRING_OUTPUT);
-          stan::proto::StanStringOutput string_output;
-          string_output.set_key("message");
-          string_output.set_value(message);
-          stan_message__.set_allocated_stan_string_output(&string_output);
-          write_delimited_pb(stan_message__, raw_output__);
-          stan_message__.clear_stan_string_output();
+          stan_message__.mutable_stan_string_output()->set_key("message");
+          stan_message__.mutable_stan_string_output()->set_value(message);
+          success = write_delimited_pb(stan_message__, raw_output__);
         }
 
       private:
+        std::ostream* flusher__;
         google::protobuf::io::ZeroCopyOutputStream* raw_output__; 
         stan::proto::StanMessage stan_message__;
 
