@@ -68,14 +68,11 @@ namespace stan {
 
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
           stan_message__.mutable_stan_parameter_output()->set_key(key);
-          stan_message__.mutable_stan_parameter_output()->clear_indexing();
-          int64_t i = 0;
-          stan_message__.mutable_stan_parameter_output()->add_indexing(i);
+          stan_message__.mutable_stan_parameter_output()->add_indexing(0);
 
           for (int64_t n = 0; n < n_values; ++n) {
             stan_message__.mutable_stan_parameter_output()->set_indexing(0,n);
             stan_message__.mutable_stan_parameter_output()->set_value(values[n]);
-            stan_message__.PrintDebugString();
             success = write_delimited_pb(stan_message__, raw_output__);
           }
 
@@ -89,11 +86,13 @@ namespace stan {
 
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
           stan_message__.mutable_stan_parameter_output()->set_key(key);
+          stan_message__.mutable_stan_parameter_output()->add_indexing(-1);
+          stan_message__.mutable_stan_parameter_output()->add_indexing(-1);
 
           for (int i = 0; i < n_rows; ++i) {
             for (int j = 0; j < n_cols; ++j) {
               stan_message__.mutable_stan_parameter_output()->set_indexing(0, i);
-              stan_message__.mutable_stan_parameter_output()->set_indexing(0, j);
+              stan_message__.mutable_stan_parameter_output()->set_indexing(1, j);
               stan_message__.mutable_stan_parameter_output()->set_value(values[i * n_cols + j]);
               success = write_delimited_pb(stan_message__, raw_output__);
             }
@@ -105,14 +104,16 @@ namespace stan {
           if (names.empty()) return;
           int idx = 0;
 
+          stan_message__.set_type(stan::proto::StanMessage::STRING_OUTPUT);
+          stan_message__.mutable_stan_string_output()->set_key("name");
+          stan_message__.mutable_stan_string_output()->add_indexing(-1);
+
           for (std::vector<std::string>::const_iterator it = names.begin();
                it != names.end(); ++it) {
-            ++idx;
-            stan_message__.set_type(stan::proto::StanMessage::STRING_OUTPUT);
-            stan_message__.mutable_stan_string_output()->set_key("name");
             stan_message__.mutable_stan_string_output()->set_indexing(0, idx);
             stan_message__.mutable_stan_string_output()->set_value(*it);
             success = write_delimited_pb(stan_message__, raw_output__);
+            ++idx;
           }
         }
 
@@ -121,14 +122,16 @@ namespace stan {
           if (state.empty()) return;
           int idx = 0;
 
+          stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
+          stan_message__.mutable_stan_parameter_output()->set_key("value");
+          stan_message__.mutable_stan_parameter_output()->add_indexing(-1);
+
           for (std::vector<double>::const_iterator it = state.begin();
                it != state.end(); ++it) {
-            ++idx;
-            stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
-            stan_message__.mutable_stan_parameter_output()->set_key("value");
             stan_message__.mutable_stan_parameter_output()->set_indexing(0, idx);
             stan_message__.mutable_stan_parameter_output()->set_value(*it);
             success = write_delimited_pb(stan_message__, raw_output__);
+            ++idx;
           }
         }
 

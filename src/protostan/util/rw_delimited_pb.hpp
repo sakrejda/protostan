@@ -30,6 +30,7 @@ namespace stan {
 
       google::protobuf::io::CodedInputStream::Limit limit = input.PushLimit(size);
 
+      message->Clear();
       if (!message->MergeFromCodedStream(&input)) return false;
       if (!input.ConsumedEntireMessage()) return false;
       input.PopLimit(limit);
