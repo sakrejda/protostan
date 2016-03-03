@@ -5,7 +5,7 @@ package stan.proto;
 /**
  * Output for a parameter-by-parameter writer.
  */
-message StanParameterOuptut {
+message StanParameterOutput {
   int64 iteration = 1;            /// Algorithm iteration.
   string key = 2;                 /// Name of the Stan model parameter.
   repeated int64 indexing = 3;    /// If present, the row-major set of indexes for the value.
@@ -13,18 +13,18 @@ message StanParameterOuptut {
 }
 
 /**
- * Output for integer ouptut.
+ * Output for integer output.
  */
-message StanIntegerOuptut {
+message StanIntegerOutput {
   string key = 2;                 /// Key from writer.
   repeated int64 indexing = 3;    /// If present, the row-major set of indexes for the value.
   int64 value = 4;                /// Integer value.
 }
 
 /**
- * Output for string ouptut.
+ * Output for string output.
  */
-message StanStringOuptut {
+message StanStringOutput {
   string key = 2;                 /// Key from writer.
   repeated int64 indexing = 3;    /// If present, the row-major set of indexes for the value.
   string value = 4;               /// String value.
