@@ -68,12 +68,17 @@ namespace stan {
 
           stan_message__.set_type(stan::proto::StanMessage::PARAMETER_OUTPUT);
           stan_message__.mutable_stan_parameter_output()->set_key(key);
+          stan_message__.mutable_stan_parameter_output()->clear_indexing();
+          int64_t i = 0;
+          stan_message__.mutable_stan_parameter_output()->add_indexing(i);
 
-          for (int n = 0; n < n_values; ++n) {
-            stan_message__.mutable_stan_parameter_output()->set_indexing(0, n);
+          for (int64_t n = 0; n < n_values; ++n) {
+            stan_message__.mutable_stan_parameter_output()->set_indexing(0,n);
             stan_message__.mutable_stan_parameter_output()->set_value(values[n]);
+            stan_message__.PrintDebugString();
             success = write_delimited_pb(stan_message__, raw_output__);
           }
+
         }
 
         void operator()(const std::string& key,

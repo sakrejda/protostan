@@ -14,6 +14,53 @@
 // it is to do a class ("binary_proto_file_writer") that uses a
 // FileOutputStream on the inside as it's ZeroCopyOutputStream type.
 // This is just to have a test.
+//
+TEST(binaryProtoStreamWriter,roundTripKeyDouble) {
+  std::string original_key = "KEY";
+  double original_value = 3.14159;
+  std::ofstream* ofs = new std::ofstream("/tmp/test-roundTripKeyDouble.pb", std::ios::trunc | std::ios::out | std::ios::binary);
+  stan::interface_callbacks::writer::binary_proto_stream_writer* writer = new stan::interface_callbacks::writer::binary_proto_stream_writer(ofs);
+  stan::proto::StanMessage pb;
+  int fd;
+  fd = open("/tmp/test-roundTripKeyDouble.pb", O_RDONLY); 
+  google::protobuf::io::FileInputStream* pb_istream = new google::protobuf::io::FileInputStream(fd);
+  bool success;
+
+  (*writer)(original_key, original_value);
+  delete writer;
+
+  success = stan::proto::read_delimited_pb(&pb, pb_istream);
+  EXPECT_EQ(true, success);
+  delete pb_istream;
+  close(fd);
+
+  EXPECT_EQ(original_key, pb.stan_parameter_output().key());
+  EXPECT_EQ(original_value, pb.stan_parameter_output().value());
+}
+
+TEST(binaryProtoStreamWriter,roundTripKeyInteger) {
+  std::string original_key = "KEY";
+  int original_value = 42;
+  std::ofstream* ofs = new std::ofstream("/tmp/test-roundTripKeyInteger.pb", std::ios::trunc | std::ios::out | std::ios::binary);
+  stan::interface_callbacks::writer::binary_proto_stream_writer* writer = new stan::interface_callbacks::writer::binary_proto_stream_writer(ofs);
+  stan::proto::StanMessage pb;
+  int fd;
+  fd = open("/tmp/test-roundTripKeyInteger.pb", O_RDONLY); 
+  google::protobuf::io::FileInputStream* pb_istream = new google::protobuf::io::FileInputStream(fd);
+  bool success;
+
+  (*writer)(original_key, original_value);
+  delete writer;
+
+  success = stan::proto::read_delimited_pb(&pb, pb_istream);
+  EXPECT_EQ(true, success);
+  delete pb_istream;
+  close(fd);
+
+  EXPECT_EQ(original_key, pb.stan_integer_output().key());
+  EXPECT_EQ(original_value, pb.stan_integer_output().value());
+}
+
 TEST(binaryProtoStreamWriter,roundTripKeyString) {
   std::string original_key = "KEY";
   std::string original_value = "I AM YOUR STRING";
@@ -33,9 +80,35 @@ TEST(binaryProtoStreamWriter,roundTripKeyString) {
   delete pb_istream;
   close(fd);
 
-  EXPECT_EQ(original_key, original_key);
   EXPECT_EQ(original_key, pb.stan_string_output().key());
   EXPECT_EQ(original_value, pb.stan_string_output().value());
+}
+
+TEST(binaryProtoStreamWriter,roundTripKeyDoubleInt) {
+  std::string original_key = "KEY";
+  double original_value[5] = {3.1, 6.2, 12.4, 99.311111111111, -1000.12} ;
+  std::ofstream* ofs = new std::ofstream("/tmp/test-roundTripKeyDoubleInt.pb", std::ios::trunc | std::ios::out | std::ios::binary);
+  stan::interface_callbacks::writer::binary_proto_stream_writer* writer = new stan::interface_callbacks::writer::binary_proto_stream_writer(ofs);
+  stan::proto::StanMessage pb;
+  int fd;
+  fd = open("/tmp/test-roundTripKeyDoubleInt.pb", O_RDONLY); 
+  google::protobuf::io::FileInputStream* pb_istream = new google::protobuf::io::FileInputStream(fd);
+  bool success;
+
+  (*writer)(original_key, original_value, 5);
+  delete writer;
+
+  for ( uint i=0; i < 5; ++i ) {
+    success = stan::proto::read_delimited_pb(&pb, pb_istream);
+    std::cout << "NOW READING: " << std::endl;
+    pb.PrintDebugString();
+    EXPECT_EQ(true, success);
+    EXPECT_EQ(original_key, pb.stan_parameter_output().key());
+    EXPECT_EQ(i, pb.stan_parameter_output().indexing(0));
+    EXPECT_EQ(original_value[i], pb.stan_parameter_output().value());
+  }
+  delete pb_istream;
+  close(fd);
 }
 
 int main(int argc, char** argv) {
@@ -44,5 +117,4 @@ int main(int argc, char** argv) {
   returnValue = RUN_ALL_TESTS();
   return returnValue;
 }
-
 
