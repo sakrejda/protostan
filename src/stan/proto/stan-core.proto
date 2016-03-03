@@ -1,6 +1,8 @@
 syntax = "proto3";
 
-package stan.proto
+package stan.proto;
+import "sample.proto";
+import "compile.proto";
 
 /** 
  * Union-type message for holding other messages and simplifying packing
@@ -15,8 +17,8 @@ message StanMessage {
     COMPILE_REQUEST = 2;   // Request to compile a Stan program to C++
     COMPILE_RESPONSE = 3;  // Compilation request response, C++ code.
     PARAMETER_OUTPUT = 4;  // Single-iteration of parameter output.
-    MESSAGE_STRING_OUTPUT = 5;    // Single string message.
-    MESSAGE_INTEGER_OUTPUT = 6;   // Single integer message.
+    STRING_OUTPUT = 5;    // Single string message.
+    INTEGER_OUTPUT = 6;   // Single integer message.
   }
   Type type = 1;  // Type of actual message held.
   StanVersion stan_version = 2; 
