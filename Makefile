@@ -50,7 +50,7 @@ test/unit/rw_delimited_pb-test: src/test/rw_delimited_pb-test.cpp
 
 test/unit/binary_proto_stream_writer-test: src/test/binary_proto_stream_writer-test.cpp
 	mkdir -p test/unit
-	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
+	g++ -std=c++0x -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
 			-I lib/stan/src \
 			-I lib/protobuf/src \
