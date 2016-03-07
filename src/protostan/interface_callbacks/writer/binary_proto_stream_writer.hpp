@@ -142,7 +142,7 @@ namespace stan {
         bool success__;
 
         void write() {
-          success__ = stan::proto::write_delimited_pb(&stan_message__, raw_output__);
+          success__ = F(&stan_message__, raw_output__);
         }
 
       };
