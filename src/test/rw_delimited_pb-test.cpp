@@ -2,6 +2,7 @@
 #include <stan/proto/stan-core.pb.h>
 #include <stan/proto/sample.pb.h>
 #include <protostan/interface_callbacks/writer/binary_proto_stream_writer.hpp>
+#include <protostan/util/rw_delimited_pb.hpp>
 #include <fcntl.h>
 
 
@@ -20,7 +21,7 @@ TEST(binaryProtoWriter, rwDelimitedPb) {
   pb.mutable_stan_parameter_output()->set_value(3.14159);
 
   pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  success = stan::proto::write_delimited_pb(pb, pb_ostream);
+  success = stan::proto::write_delimited_pb(&pb, pb_ostream);
   EXPECT_EQ(true, success);
   delete pb_ostream;
   close(fd);

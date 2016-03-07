@@ -1,3 +1,5 @@
+#ifndef STAN_UTIL_RW_DELIMITED_PB_HPP
+#define STAN_UTIL_RW_DELIMITED_PB_HPP
 
 #include <string>
 #include <iostream>
@@ -9,13 +11,13 @@ namespace stan {
   namespace proto {
 
     bool write_delimited_pb(
-        const google::protobuf::MessageLite& message,
+        google::protobuf::MessageLite* message,
         google::protobuf::io::ZeroCopyOutputStream* raw_output
     ) {
       google::protobuf::io::CodedOutputStream output(raw_output);
-      const google::protobuf::uint32 size = message.ByteSize();
+      const google::protobuf::uint32 size = message->ByteSize();
       output.WriteVarint32(size);
-      message.SerializeToCodedStream(&output);
+      message->SerializeToCodedStream(&output);
       return true;
     }
 
@@ -40,3 +42,5 @@ namespace stan {
 
   }  // proto namespace
 }  // stan namespace
+
+#endif
