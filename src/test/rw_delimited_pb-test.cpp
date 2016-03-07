@@ -5,7 +5,31 @@
 #include <protostan/util/rw_delimited_pb.hpp>
 #include <fcntl.h>
 
-
+/*
+ * This is a round-trip test which must control lifetime of the streams
+ * and file descriptors so they are all instantiated as pointers.  The
+ * stream is only flushed when deleted, and for good measure I close the
+ * file after writing and re-open it for reading rather than messing
+ * around with seekg/etc... a simple StanMessage is created, written to the
+ * file, and then the data is read back into a separate StanMessage
+ * before comaprison.
+ *
+ * In typical usage, the stream could be created
+ * without the use of a pointer/new.  So something assuming two
+ * StanMessage types are on hand (pb and pb2), something like:
+ *
+ * mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+ * int fd = open("/tmp/test-rwDelimitedPb.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
+ * google::protobuf::io::FileOutputStream pb_ostream(fd);
+ * success = stan::proto::write_delimited_pb(&pb, &pb_ostream);
+ * 
+ * The reading example below would be:
+ *
+ * fd = open("/tmp/test-rwDelimitedPb.pb", O_RDONLY); 
+ * google::protobuf::io::FileInputStream pb_istream(fd);
+ * success = stan::proto::read_delimited_pb(&pb2, &pb_istream);
+ *
+ */
 TEST(binaryProtoWriter, rwDelimitedPb) {
   std::string original_key = "KEY";
   std::string original_value = "I AM YOUR STRING";

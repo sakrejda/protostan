@@ -8,15 +8,20 @@
 #include <fcntl.h>
 #include <random>
 
-// This test instantiates writer/ios explicitely as pointers to control
-// their lifetime s.t. the buffer internal to the writer is flushed
-// correctly prior to attempting a read and so that the writer can flush
-// the iostream buffer correctly.  This is not an efficient way to write
-// to file as there are two layers of buffering.  The correct way to do
-// it is to do a class ("binary_proto_file_writer") that uses a
-// FileOutputStream on the inside as it's ZeroCopyOutputStream type.
-// This is just to have a test.
-//
+/*
+ * These tests instantiate the streams using pointer/new and the writer
+ * using pointer/new in order to control object lifetime and stream
+ * flushing.  This is not the right way to use them in other code where
+ * a stream is flushed on destruction and read by a separate process.
+ * In general the writer should be instantiated as (probably with a
+ * typedef in here somewhere):
+ *
+ * stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb> writer(ostream);
+ *
+ * where ostream is a ZeroCopyOutputStream (or subclass), here a
+ * OstreamOuptutStream constructed from a std::ostream.  The ostream
+ * must be passed in as a pointer and will be delted by the writer.
+ */
 TEST(binaryProtoOstreamWriter,roundTripKeyDouble) {
   std::string original_key = "KEY";
   double original_value = 3.14159;
