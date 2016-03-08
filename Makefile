@@ -3,92 +3,38 @@ PROTOC ?= protoc
 PROTO_DIR = src/stan/proto
 PROTO_SRCS = $(shell find $(PROTO_DIR) -name "*.proto")
 PROTO_GENERATED = $(subst .proto,.pb.cc,$(PROTO_SRCS))
+TEST_DIR = src/test/
+TEST_SRCS = $(shell find $(TEST_DIR) -name "*.cpp")
+TEST_BINS = $(subst .cpp,,$(TEST_SRCS))
+TEST_LIBS = \
+  lib/libstanc.a \
+	lib/libprotobuf.a \
+  lib/libgtest.a \
 
 default: test
 
-libraries: lib/libstanc.a lib/libgtest.a lib/libprotobuf.a
+libraries: $(TEST_LIBS)
 
-test-binaries: test/unit/compile-test test/unit/rw_delimited_pb-test test/unit/binary_proto_filestream_writer-test test/unit/binary_proto_ostream_writer-test
-
-generated: $(PROTO_GENERATED)
+%-test: %-test.cpp $(TEST_LIBS) $(PROTO_GENERATED)
+	$(CXX) -std=c++11 -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
+			-I src \
+			-I lib/stan/src \
+			-I lib/protobuf/src \
+			-isystem lib/stan/lib/stan_math/lib/boost_1.58.0 \
+			-pthread \
+			-o $@ \
+			$< \
+			$(PROTO_GENERATED) \
+			$(TEST_LIBS)
 
 %.pb.cc: %.proto
 	$(PROTOC) --cpp_out=$(PROTO_DIR) --proto_path=$(PROTO_DIR) $<
 
-test: libraries generated test-binaries
+test: $(TEST_BINS)
 	@echo running tests
-	test/unit/compile-test
-	test/unit/rw_delimited_pb-test
-	test/unit/binary_proto_filestream_writer-test
-	test/unit/binary_proto_ostream_writer-test
+	$(foreach bin,$(TEST_BINS), $(bin);)
 
 test-full: test cpplint
-
-test/unit/compile-test: src/test/compile-test.cpp
-	mkdir -p test/unit
-	$(CXX) -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
-			-I src \
-			-I lib/stan/src \
-			-I lib/protobuf/src \
-			-isystem lib/stan/lib/stan_math/lib/boost_1.58.0 \
-			-pthread \
-			-o test/unit/compile-test \
-			src/test/compile-test.cpp \
-			src/stan/proto/compile.pb.cc \
-			lib/libgtest.a \
-			lib/libstanc.a \
-			lib/libprotobuf.a
-
-test/unit/rw_delimited_pb-test: src/test/rw_delimited_pb-test.cpp
-	mkdir -p test/unit
-	$(CXX) -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
-			-I src \
-			-I lib/stan/src \
-			-I lib/protobuf/src \
-			-isystem lib/stan/lib/stan_math/lib/boost_1.58.0 \
-			-pthread \
-			-o test/unit/rw_delimited_pb-test \
-			src/test/rw_delimited_pb-test.cpp \
-			src/stan/proto/stan-core.pb.cc \
-			src/stan/proto/compile.pb.cc \
-			src/stan/proto/sample.pb.cc \
-			lib/libgtest.a \
-			lib/libstanc.a \
-			lib/libprotobuf.a
-
-test/unit/binary_proto_filestream_writer-test: src/test/binary_proto_filestream_writer-test.cpp
-	mkdir -p test/unit
-	$(CXX) -std=c++0x -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
-			-I src \
-			-I lib/stan/src \
-			-I lib/protobuf/src \
-			-isystem lib/stan/lib/stan_math/lib/boost_1.58.0 \
-			-pthread \
-			-o test/unit/binary_proto_filestream_writer-test \
-			src/test/binary_proto_filestream_writer-test.cpp \
-			src/stan/proto/stan-core.pb.cc \
-			src/stan/proto/compile.pb.cc \
-			src/stan/proto/sample.pb.cc \
-			lib/libgtest.a \
-			lib/libstanc.a \
-			lib/libprotobuf.a
-
-test/unit/binary_proto_ostream_writer-test: src/test/binary_proto_ostream_writer-test.cpp
-	mkdir -p test/unit
-	$(CXX) -std=c++0x -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
-			-I src \
-			-I lib/stan/src \
-			-I lib/protobuf/src \
-			-isystem lib/stan/lib/stan_math/lib/boost_1.58.0 \
-			-pthread \
-			-o test/unit/binary_proto_ostream_writer-test \
-			src/test/binary_proto_ostream_writer-test.cpp \
-			src/stan/proto/stan-core.pb.cc \
-			src/stan/proto/compile.pb.cc \
-			src/stan/proto/sample.pb.cc \
-			lib/libgtest.a \
-			lib/libstanc.a \
-			lib/libprotobuf.a
 
 lib/libprotobuf.a: lib/protobuf
 	cd lib/protobuf && ./autogen.sh && ./configure && make
@@ -114,4 +60,4 @@ cpplint:
 		--filter=-runtime/indentation_namespace,-readability/namespace,-legal/copyright,-whitespace/indent,-whitespace/line_length,-runtime/reference \
 		$(shell find src/protostan -name '*.hpp' -o -name '*.cpp')
 
-.PHONY: cpplint test
+.PHONY: default libraries test cpplint
