@@ -7,4 +7,4 @@ before_install:
   - git submodule update --init --recursive
 script:
   - make cpplint
-  - make test
+  - PROTOC=./lib/protobuf/src/protoc make test
