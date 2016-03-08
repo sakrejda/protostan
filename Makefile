@@ -60,4 +60,7 @@ cpplint:
 		--filter=-runtime/indentation_namespace,-readability/namespace,-legal/copyright,-whitespace/indent,-whitespace/line_length,-runtime/reference \
 		$(shell find src/protostan -name '*.hpp' -o -name '*.cpp')
 
-.PHONY: default libraries test cpplint
+clean:
+	rm -f $(TEST_BINS) $(PROTO_GENERATED)
+
+.PHONY: default libraries test cpplint clean
