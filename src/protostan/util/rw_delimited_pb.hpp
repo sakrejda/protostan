@@ -1,11 +1,11 @@
 #ifndef STAN_UTIL_RW_DELIMITED_PB_HPP
 #define STAN_UTIL_RW_DELIMITED_PB_HPP
 
-#include <string>
-#include <iostream>
+#include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
-#include <google/protobuf/io/coded_stream.h>
+#include <iostream>
+#include <string>
 
 namespace stan {
   namespace proto {
@@ -36,9 +36,8 @@ namespace stan {
       if (!message->MergeFromCodedStream(&input)) return false;
       if (!input.ConsumedEntireMessage()) return false;
       input.PopLimit(limit);
-      return true;  
-    };
-
+      return true;
+    }
 
   }  // proto namespace
 }  // stan namespace
