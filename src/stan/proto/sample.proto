@@ -3,6 +3,27 @@ syntax = "proto3";
 package stan.proto;
 
 /**
+ * Union-type message for holding messages received from
+ * stan/interface_callbacks/writer/base_writer.hpp
+ *
+ * This design follows the 'union types' techniques suggestion from:
+ * https://developers.google.com/protocol-buffers/docs/techniques
+ */
+message StanOutput {
+  enum Type {
+    UNKNOWN = 0;           // Default value in case of bad set value.
+    PARAMETER_OUTPUT = 1;  // Single-iteration of parameter output.
+    STRING_OUTPUT = 2;     // Single string message.
+    INTEGER_OUTPUT = 3;    // Single integer message.
+  }
+  Type type = 1;           // Type of actual message held.
+  StanParameterOutput stan_parameter_output = 5;
+  StanIntegerOutput stan_integer_output = 6;
+  StanStringOutput stan_string_output = 7;
+}
+
+
+/**
  * Output for a parameter-by-parameter writer.
  */
 message StanParameterOutput {
@@ -29,9 +50,3 @@ message StanStringOutput {
   repeated int64 indexing = 3;    /// If present, the row-major set of indexes for the value.
   string value = 4;               /// String value.
 }
-
-
-
-
-
-
