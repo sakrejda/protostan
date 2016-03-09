@@ -34,6 +34,10 @@ Message definitions are found in ``src/stan/proto``.
 Quickstart
 ==========
 
+The directory containing the ``protoc`` binary should be in your ``PATH``
+(e.g., in ``/usr/bin/``) or you can define an environment variable ``PROTOC``
+which points to the binary.
+
 1. Clone repository and submodules
 
 ```
