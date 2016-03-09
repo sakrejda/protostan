@@ -23,12 +23,12 @@ namespace stan {
         /**
          * Constructor. Takes ownership of the pointer argument.
          *
-         * @param output pointer to a ZeroCopyOutputStream (sublcass) to 
-         *               write to.  The object now owns the pointer and 
-         *               will delete on destruction.  
+         * @param output pointer to a ZeroCopyOutputStream (sublcass) to
+         *               write to.  The object now owns the pointer and
+         *               will delete on destruction.
          */
         binary_proto_stream_writer(
-          google::protobuf::io::ZeroCopyOutputStream* output) : 
+          google::protobuf::io::ZeroCopyOutputStream* output) :
           raw_output__(output) {}
 
         ~binary_proto_stream_writer() {
@@ -66,11 +66,10 @@ namespace stan {
           stan_message__.mutable_stan_parameter_output()->add_indexing(0);
 
           for (int64_t n = 0; n < n_values; ++n) {
-            stan_message__.mutable_stan_parameter_output()->set_indexing(0,n);
+            stan_message__.mutable_stan_parameter_output()->set_indexing(0, n);
             stan_message__.mutable_stan_parameter_output()->set_value(values[n]);
             write();
           }
-
         }
 
         void operator()(const std::string& key,
@@ -137,14 +136,13 @@ namespace stan {
         }
 
       private:
-        google::protobuf::io::ZeroCopyOutputStream* raw_output__; 
+        google::protobuf::io::ZeroCopyOutputStream* raw_output__;
         stan::proto::StanMessage stan_message__;
         bool success__;
 
         void write() {
           success__ = F(&stan_message__, raw_output__);
         }
-
       };
 
     }
