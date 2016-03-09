@@ -99,6 +99,12 @@ lib/libstanc.a: lib/stan
 	cp lib/stan/bin/libstanc.a lib
 
 cpplint:
-	python2 lib/stan/lib/stan_math/lib/cpplint_4.45/cpplint.py --output=vs7 --counting=detailed --root=src --extension=hpp,cpp --filter=-runtime/indentation_namespace,-readability/namespace,-legal/copyright,-whitespace/indent,-runtime/reference $(shell find src/protostan -name '*.hpp' -o -name '*.cpp')
+	python2 lib/stan/lib/stan_math/lib/cpplint_4.45/cpplint.py \
+		--output=vs7 \
+		--counting=detailed \
+		--root=src \
+		--extension=hpp,cpp \
+		--filter=-runtime/indentation_namespace,-readability/namespace,-legal/copyright,-whitespace/indent,-whitespace/line_length,-runtime/reference \
+		$(shell find src/protostan -name '*.hpp' -o -name '*.cpp')
 
 .PHONY: cpplint test
