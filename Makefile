@@ -1,3 +1,4 @@
+CXX ?= g++
 
 default: test
 
@@ -19,7 +20,7 @@ test-full: test cpplint
 
 test/unit/compile-test: src/test/compile-test.cpp
 	mkdir -p test/unit
-	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
+	$(CXX) -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
 			-I lib/stan/src \
 			-I lib/protobuf/src \
@@ -34,7 +35,7 @@ test/unit/compile-test: src/test/compile-test.cpp
 
 test/unit/rw_delimited_pb-test: src/test/rw_delimited_pb-test.cpp
 	mkdir -p test/unit
-	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
+	$(CXX) -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
 			-I lib/stan/src \
 			-I lib/protobuf/src \
@@ -51,7 +52,7 @@ test/unit/rw_delimited_pb-test: src/test/rw_delimited_pb-test.cpp
 
 test/unit/binary_proto_filestream_writer-test: src/test/binary_proto_filestream_writer-test.cpp
 	mkdir -p test/unit
-	g++ -std=c++0x -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
+	$(CXX) -std=c++0x -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
 			-I lib/stan/src \
 			-I lib/protobuf/src \
@@ -68,7 +69,7 @@ test/unit/binary_proto_filestream_writer-test: src/test/binary_proto_filestream_
 
 test/unit/binary_proto_ostream_writer-test: src/test/binary_proto_ostream_writer-test.cpp
 	mkdir -p test/unit
-	g++ -std=c++0x -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
+	$(CXX) -std=c++0x -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I src \
 			-I lib/stan/src \
 			-I lib/protobuf/src \
@@ -88,7 +89,7 @@ lib/libprotobuf.a: lib/protobuf
 	cp lib/protobuf/src/.libs/libprotobuf.a lib
 
 lib/libgtest.a: lib/stan
-	g++ -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
+	$(CXX) -I lib/stan/lib/stan_math/lib/gtest_1.7.0/include \
 			-I lib/stan/lib/stan_math/lib/gtest_1.7.0/ \
 			-c lib/stan/lib/stan_math/lib/gtest_1.7.0/src/gtest-all.cc \
 			-o lib/gtest-all.o
