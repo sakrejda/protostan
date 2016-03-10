@@ -1,4 +1,11 @@
 language: cpp
+addons:
+ apt:
+   sources:
+   - ubuntu-toolchain-r-test
+   packages:
+   - gcc-4.8
+   - g++-4.8
 sudo: false
 compiler:
   - clang
@@ -7,4 +14,4 @@ before_install:
   - git submodule update --init --recursive
 script:
   - make cpplint
-  - make test
+  - PROTOC=./lib/protobuf/src/protoc make test

@@ -12,3 +12,4 @@ test/*/*
 test/*/*/*
 src/stan/proto/*.pb.cc
 src/stan/proto/*.pb.h
+src/test/*-test
