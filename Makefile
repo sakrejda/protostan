@@ -1,4 +1,8 @@
 CXX ?= g++
+PROTOC ?= protoc
+PROTO_DIR = src/stan/proto
+PROTO_SRCS = $(shell find $(PROTO_DIR) -name "*.proto")
+PROTO_GENERATED = $(subst .proto,.pb.cc,$(PROTO_SRCS))
 
 default: test
 
@@ -6,10 +10,12 @@ libraries: lib/libstanc.a lib/libgtest.a lib/libprotobuf.a
 
 test-binaries: test/unit/compile-test test/unit/rw_delimited_pb-test test/unit/binary_proto_filestream_writer-test test/unit/binary_proto_ostream_writer-test
 
-generated:
-	./lib/protobuf/src/protoc --cpp_out=src/stan/proto --proto_path=src/stan/proto src/stan/proto/*.proto
+generated: $(PROTO_GENERATED)
 
-test: libraries generated test-binaries 
+%.pb.cc: %.proto
+	$(PROTOC) --cpp_out=$(PROTO_DIR) --proto_path=$(PROTO_DIR) $<
+
+test: libraries generated test-binaries
 	@echo running tests
 	test/unit/compile-test
 	test/unit/rw_delimited_pb-test
