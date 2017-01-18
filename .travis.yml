@@ -5,4 +5,6 @@ compiler:
   - gcc
 before_install:
   - git submodule update --init --recursive
-script: make test
+script:
+  - make cpplint
+  - make test
