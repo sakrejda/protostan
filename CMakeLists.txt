@@ -13,9 +13,9 @@ include_directories(${BOOST})
 
 # Find libraries:
 find_library(LIB_PROTOBUF protobuf)
-find_library(LIB_GTEST gtest ${PROJECT_BINARY_DIR}/lib/googletest/googletest)
-find_library(LIB_GTEST_MAIN gtest_main ${PROJECT_BINARY_DIR}/lib/googletest/googletest)
-find_library(LIB_STANC stanc ${PROJECT_BINARY_DIR}/lib)
+find_library(LIB_GTEST gtest)
+find_library(LIB_GTEST_MAIN gtest_main)
+find_library(LIB_STANC stanc)
 
 message(${LIB_PROTOBUF})
 message(${LIB_GTEST})
