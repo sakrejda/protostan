@@ -34,9 +34,9 @@ Message definitions are found in the ``proto`` subdirectory.
 Quickstart
 ==========
 
-1. This repository does not build by itself but as part of the
-sakrejda/stan-dev repo.  Clone repository, do NOT clone or build
-sub-modules.
+1. This repository assumes that find_library, as written, will find
+gtest, protobuf, and stanc.  If that's a tall order for your system, 
+use this dev repo instead:
 
 ```
 cd ${DEV_DIR}
@@ -44,7 +44,15 @@ git clone https://github.com/sakrejda/stan-dev.git
 cd stan-dev
 ```
 
-2. Set option to build protostan and any missing dependencies.
+If you have all that available already:
+
+```
+cd ${DEV_DIR}
+git clone https://github.com/sakrejda/protostan.git
+cd protostan
+```
+
+2. If using the dev repo, set option to build protostan and any missing dependencies.
    By default this includes all the required dependencies.
 
 ```
@@ -53,9 +61,19 @@ cd stan-dev
 
 3. Set up a build environment and build.
 
+With the dev repo:
+
 ```
 cd ${BUILD_DIR}
 cmake ${DEV_DIR}/stan-dev 
+make
+```
+
+With the stand-alone:
+
+```
+cd ${BUILD_DIR}
+cmake ${DEV_DIR}/protostan
 make
 ```
 
