@@ -28,28 +28,44 @@ the C++ API.  For the time being this repository should contain:
 Location of Protocol Buffer Message Definitions
 ===============================================
 
-Message definitions are found in ``src/stan/proto``.
+Message definitions are found in the ``proto`` subdirectory.
 
 
 Quickstart
 ==========
 
-1. Clone repository and submodules
+1. This repository does not build by itself but as part of the
+sakrejda/stan-dev repo.  Clone repository, do NOT clone or build
+sub-modules.
 
 ```
-git clone https://github.com/sakrejda/protostan.git
-cd protostan
-git submodule update --init --recursive
+cd ${DEV_DIR}
+git clone https://github.com/sakrejda/stan-dev.git
+cd stan-dev
 ```
 
-2. Ensure static libraries exist
+2. Set option to build protostan and any missing dependencies.
+   By default this includes all the required dependencies.
 
 ```
-make libraries
+...... HOW?
 ```
 
-3. Run tests
+3. Set up a build environment and build.
 
 ```
-make test
+cd ${BUILD_DIR}
+cmake ${DEV_DIR}/stan-dev 
+make
 ```
+
+4. Run tests
+```
+cd ${BUILD_DIR}
+ctest
+```
+ 
+5. Installation, currently none.
+
+
+
