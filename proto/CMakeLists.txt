@@ -14,20 +14,20 @@ foreach(proto IN ITEMS ${proto-schema})
 endforeach(proto)
 
 find_package(Protobuf REQUIRED)
-protobuf_generate_cpp(PROTO_CPP PROTO_HPP proto-schema)
+protobuf_generate_cpp(PROTO_CPP_SRC PROTO_HPP_SRC proto-schema)
 
-add_custom_command(
-  OUTPUT ${proto-hpp-list} ${proto-cpp-list}
-  COMMAND protoc --cpp_out=${PROJECT_BINARY_DIR}/src/stan/proto
-  --proto_path=${PROJECT_SOURCE_DIR}/proto ${proto-schema}
-  DEPENDS ${proto-schema}
-)
+#add_custom_command(
+#  OUTPUT ${proto-hpp-list} ${proto-cpp-list}
+#  COMMAND protoc --cpp_out=${PROJECT_BINARY_DIR}/src/stan/proto
+#  --proto_path=${PROJECT_SOURCE_DIR}/proto ${proto-schema}
+#  DEPENDS ${proto-schema}
+#)
 
 add_custom_target(
   proto-headers ALL DEPENDS ${proto-hpp-list} ${proto-cpp-list} protobuf
 )
 
-set(PROTO_HPP ${proto-hpp-list} PARENT_SCOPE)
-set(PROTO_CPP ${proto-cpp-list} PARENT_SCOPE)
+set(PROTO_HPP ${PROTO_HPP_SRC} PARENT_SCOPE)
+set(PROTO_CPP ${PROTO_CPP_SRC} PARENT_SCOPE)
 
 
