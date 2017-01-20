@@ -18,5 +18,7 @@ add_custom_target(
   proto-headers ALL DEPENDS ${proto-hpp} ${proto-cpp} protobuf
 )
 
+set(PROTO_HPP ${proto-hpp} PARENT_SCOPE)
+set(PROTO_CPP ${proto-cpp} PARENT_SCOPE)
 
 
