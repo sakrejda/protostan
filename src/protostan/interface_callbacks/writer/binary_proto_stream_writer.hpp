@@ -3,14 +3,14 @@
 
 #include <google/protobuf/io/zero_copy_stream.h>
 #include <stan/proto/sample.pb.h>
-#include <stan/interface_callbacks/writer/base_writer.hpp>
+#include <stan/callbacks/writer.hpp>
 #include <protostan/util/rw_delimited_pb.hpp>
 #include <ostream>
 #include <vector>
 #include <string>
 
 namespace stan {
-  namespace interface_callbacks {
+  namespace callbacks {
     namespace writer {
 
       /**
@@ -18,7 +18,7 @@ namespace stan {
        */
       template <bool (*F)(
         google::protobuf::MessageLite*, google::protobuf::io::ZeroCopyOutputStream*)>
-      class binary_proto_stream_writer : public base_writer {
+      class binary_proto_stream_writer : public writer {
       public:
         /**
          * Constructor. Takes ownership of the pointer argument.
