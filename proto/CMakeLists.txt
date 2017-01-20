@@ -19,8 +19,8 @@ endforeach(proto)
 add_custom_command(
   OUTPUT ${proto-hpp-list} ${proto-cpp-list}
   COMMAND protoc --cpp_out=${PROJECT_BINARY_DIR}/src/stan/proto
-  --proto_path=${PROJECT_SOURCE_DIR}/proto ${proto}
-  DEPENDS ${proto}
+  --proto_path=${PROJECT_SOURCE_DIR}/proto ${proto-schema}
+  DEPENDS ${proto-schema}
 )
 
 add_custom_target(
