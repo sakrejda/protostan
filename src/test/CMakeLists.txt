@@ -29,7 +29,7 @@ foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
   add_executable(${TEST_NAME} ${TEST_CPP} ${PROTO_CPP} ${STAN_SRC})
   set_target_properties(${TEST_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
     ${PROJECT_BINARY_DIR}/test/unit)
-  add_dependencies(${TEST_NAME} proto-headers stanc)
+  add_dependencies(${TEST_NAME} protostan-prerequisites)
   target_link_libraries(${TEST_NAME} ${LIB_GTEST} ${LIB_STANC} ${LIB_PROTOBUF})
   add_test(${TEST_NAME} ${PROJECT_BINARY_DIR}/test/unit/${TEST_NAME})
   GTEST_ADD_TESTS(${TEST_NAME} "" AUTO)
