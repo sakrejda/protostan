@@ -28,6 +28,5 @@ foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
 endforeach(TEST_CPP)
 
 
-GTEST_ADD_TESTS(${TESTS_CPP} "" AUTO)
 
 
