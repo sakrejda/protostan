@@ -25,6 +25,7 @@ message("LIB_GTEST_MAIN: " ${LIB_GTEST_MAIN})
 message("STAN_LIB_DIR: " ${STAN_LIB_DIR})
 find_library(LIB_STANC NAMES stanc libstanc stanc.a libstanc.a PATHS ${STAN_LIB_DIR})
 message("LIB_STANC: " ${LIB_STANC})
+message("GTEST_INCLUDE_DIR: " ${GTEST_INCLUDE_DIR})
 
 
 add_subdirectory(proto)
