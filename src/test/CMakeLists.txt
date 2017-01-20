@@ -25,7 +25,7 @@ foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
   add_dependencies(${TEST_NAME} protostan-prerequisites proto-headers)
   target_link_libraries(${TEST_NAME} ${GTEST_LIBRARY} ${LIB_STANC} ${PROTOBUF_LIBS})
   add_test(${TEST_NAME} ${PROJECT_BINARY_DIR}/test/unit/${TEST_NAME})
-#  GTEST_ADD_TESTS(${TEST_CPP} "" AUTO)
+  GTEST_ADD_TESTS(${TEST_CPP} "" AUTO)
 endforeach(TEST_CPP)
 
 
