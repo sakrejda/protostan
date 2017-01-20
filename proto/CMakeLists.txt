@@ -4,10 +4,13 @@
 file(GLOB proto-schema *.proto)
 
 foreach(proto IN ITEMS ${proto-schema})
-  string(REGEX REPLACE ".proto$" ".pb.h" proto-hpp ${proto})
-  list(APPEND proto-hpp-list ${proto-hpp})
-  string(REGEX REPLACE ".proto$" ".pb.cc" proto-cpp ${proto})
-  list(APPEND proto-cpp-list ${proto-cpp})
+  get_filename_component(proto-stub ${proto} NAME)
+  string(REGEX REPLACE ".proto$" ".pb.h" proto-hpp ${proto-stub})
+  list(APPEND proto-hpp-list ${PROJECT_BINARY_DIR}/src/stan/proto/${proto-hpp})
+  string(REGEX REPLACE ".proto$" ".pb.cc" proto-cpp ${proto-stub})
+  list(APPEND proto-cpp-list ${PROJECT_BINARY_DIR}/src/stan/proto/${proto-cpp})
+  message("PROTO_HPP: " ${proto-hpp})
+  message("PROTO_CPP: " ${proto-cpp})
 endforeach(proto)
 
 find_package(Protobuf REQUIRED)
