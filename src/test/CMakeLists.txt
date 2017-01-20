@@ -1,7 +1,22 @@
 enable_testing()
 find_package(GTest REQUIRED)
 
+# Finding stuff...
+message("PROTOBUF_LIB_DIR: " ${PROTOBUF_LIB_DIR})
+find_library(LIB_PROTOBUF NAMES protobuf libprotobuf protobuf.a libprotobuf.a PATHS ${PROTOBUF_LIB_DIR})
+message("LIB_PROTOBUF: " ${LIB_PROTOBUF})
+message("GTEST_LIB_DIR: " ${GTEST_LIB_DIR})
+find_library(LIB_GTEST NAMES gtest libgtest gtest.a libgtest.a PATHS ${GTEST_LIB_DIR})
+message("LIB_GTEST: " ${LIB_GTEST})
+find_library(LIB_GTEST_MAIN NAMES gtest_main libgtest gtest.a libgtest.a PATHS ${GTEST_LIB_DIR})
+message("LIB_GTEST_MAIN: " ${LIB_GTEST_MAIN})
+message("STAN_LIB_DIR: " ${STAN_LIB_DIR})
+find_library(LIB_STANC NAMES stanc libstanc stanc.a libstanc.a PATHS ${STAN_LIB_DIR})
+message("LIB_STANC: " ${LIB_STANC})
+message("GTEST_INCLUDE_DIR: " ${GTEST_INCLUDE_DIR})
 file(GLOB TESTS_CPP *test.cpp)
+
+# Build:
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR}/src)
 include_directories(${GTEST_INCLUDE_DIR})
