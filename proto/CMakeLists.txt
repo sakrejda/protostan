@@ -29,5 +29,5 @@ add_custom_target(
 
 set(PROTO_HPP ${proto-hpp-list} PARENT_SCOPE)
 set(PROTO_CPP ${proto-cpp-list} PARENT_SCOPE)
-
+set(PROTOSTAN_INCLUDE_DIR ${PROJECT_BINARY_DIR}/src/stan/proto/ PARENT_SCOPE)
 
