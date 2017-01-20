@@ -23,6 +23,7 @@ endforeach(PROTO)
 foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
   message("TEST_CPP: " ${TEST_CPP})
   get_filename_component(TEST_NAME ${TEST_CPP} NAME_WE)
+  message("TEST_NAME: " ${TEST_NAME})
 endforeach(TEST_CPP)
 
 foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
