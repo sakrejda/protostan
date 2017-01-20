@@ -15,7 +15,7 @@ add_custom_command(
 )
 
 add_custom_target(
-  proto-headers ALL DEPENDS ${proto-hpp} ${proto-cpp}
+  proto-headers ALL DEPENDS ${proto-hpp} ${proto-cpp} protobuf
 )
 
 
