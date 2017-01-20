@@ -21,6 +21,7 @@ foreach(PROTO IN ITEMS ${PROTO_HPP})
 endforeach(PROTO)
 
 foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
+  message("TEST_CPP: " ${TEST_CPP})
   get_filename_component(TEST_NAME ${TEST_CPP} NAME_WE)
   add_executable(${TEST_NAME} ${TEST_CPP} ${PROTO_HPP} ${PROTO_CPP} ${STAN_SRC})
   set_target_properties(${TEST_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/test/unit)
