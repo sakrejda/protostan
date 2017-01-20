@@ -10,6 +10,7 @@ include_directories(${GTEST_INCLUDE_DIR})
 include_directories(${STAN_INCLUDE_DIR})
 
 # Build:
+message("PROTOBUF_LIBS: " ${PROTOBUF_LIBS})
 
 foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
   get_filename_component(TEST_NAME ${TEST_CPP} NAME_WE)
