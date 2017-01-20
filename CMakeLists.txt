@@ -12,15 +12,15 @@ set(BOOST lib/stan/lib/stan_math/lib/boost_1.58.0)
 include_directories(${BOOST})
 
 # Find libraries:
-find_package(Protobuf)
-find_package(GTest)
+#find_package(Protobuf)
+#find_package(GTest)
 message("PROTOBUF_LIB_DIR: " ${PROTOBUF_LIB_DIR})
 message("GTEST_LIB_DIR: " ${GTEST_LIB_DIR})
 message("STAN_LIB_DIR: " ${STAN_LIB_DIR})
-find_library(LIB_PROTOBUF protobuf PATHS ${PROTOBUF_LIB_DIR})
-#find_library(LIB_GTEST gtest PATHS ${GTEST_LIB_DIR})
-#find_library(LIB_GTEST_MAIN gtest_main PATHS ${GTEST_LIB_DIR})
-find_library(LIB_STANC stanc PATHS ${STAN_LIB_DIR})
+find_library(LIB_PROTOBUF NAMES protobuf libprotobuf protobuf.a libprotobuf.a PATHS ${PROTOBUF_LIB_DIR})
+find_library(LIB_GTEST NAMES gtest libgtest gtest.a libgtest.a PATHS ${GTEST_LIB_DIR})
+find_library(LIB_GTEST_MAIN NAMES gtest_main libgtest gtest.a libgtest.a PATHS ${GTEST_LIB_DIR})
+find_library(LIB_STANC NAMES stanc libstanc stanc.a libstanc.a PATHS ${STAN_LIB_DIR})
 
 
 add_subdirectory(proto)
