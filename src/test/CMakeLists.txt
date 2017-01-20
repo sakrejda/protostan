@@ -11,6 +11,12 @@ include_directories(${STAN_INCLUDE_DIR})
 include_directories(${PROTOSTAN_INCLUDE_DIR})
 
 # Build:
+add_custom_command(
+  OUTPUT ${proto-hpp-list} ${proto-cpp-list}
+  COMMAND protoc --cpp_out=${PROJECT_BINARY_DIR}/src/stan/proto
+  --proto_path=${PROJECT_SOURCE_DIR}/proto ${proto-schema}
+  DEPENDS ${proto-schema}
+)
 
 foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
   get_filename_component(TEST_NAME ${TEST_CPP} NAME_WE)
