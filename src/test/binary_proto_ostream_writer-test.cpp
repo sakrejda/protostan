@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include <stan/proto/stan-core.pb.h>
 #include <stan/proto/sample.pb.h>
-#include <protostan/interface_callbacks/writer/binary_proto_stream_writer.hpp>
+#include <protostan/callbacks/binary_proto_stream_writer.hpp>
 #include <protostan/util/rw_delimited_pb.hpp>
 #include <iostream>
 #include <fstream>
@@ -23,8 +23,8 @@ TEST(binaryProtoOstreamWriter,roundTripKeyDouble) {
 
   std::stringstream* ios = new std::stringstream();
   google::protobuf::io::OstreamOutputStream* pb_ostream = new google::protobuf::io::OstreamOutputStream(ios);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
   (*writer)(original_key, original_value);
   delete writer;
 
@@ -45,8 +45,8 @@ TEST(binaryProtoOstreamWriter,roundTripKeyInteger) {
 
   std::stringstream* ios = new std::stringstream();
   google::protobuf::io::OstreamOutputStream* pb_ostream = new google::protobuf::io::OstreamOutputStream(ios);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value);
   delete writer;
@@ -68,8 +68,8 @@ TEST(binaryProtoOstreamWriter,roundTripKeyString) {
 
   std::stringstream* ios = new std::stringstream();
   google::protobuf::io::OstreamOutputStream* pb_ostream = new google::protobuf::io::OstreamOutputStream(ios);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value);
   delete writer;
@@ -91,8 +91,8 @@ TEST(binaryProtoOstreamWriter,roundTripKeyDoubleInt) {
 
   std::stringstream* ios = new std::stringstream();
   google::protobuf::io::OstreamOutputStream* pb_ostream = new google::protobuf::io::OstreamOutputStream(ios);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value, 5);
   delete writer;
@@ -117,8 +117,8 @@ TEST(binaryProtoOstreamWriter,roundTripKeyDoubleIntInt) {
 
   std::stringstream* ios = new std::stringstream();
   google::protobuf::io::OstreamOutputStream* pb_ostream = new google::protobuf::io::OstreamOutputStream(ios);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value, 3, 2);
   delete writer;
@@ -162,8 +162,8 @@ TEST(binaryProtoOstreamWriter,roundTripVectorString) {
 
   std::stringstream* ios = new std::stringstream();
   google::protobuf::io::OstreamOutputStream* pb_ostream = new google::protobuf::io::OstreamOutputStream(ios);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_value);
   delete writer;
@@ -194,8 +194,8 @@ TEST(binaryProtoOstreamWriter,roundTripVectorDouble) {
 
   std::stringstream* ios = new std::stringstream();
   google::protobuf::io::OstreamOutputStream* pb_ostream = new google::protobuf::io::OstreamOutputStream(ios);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_value);
   delete writer;
@@ -219,8 +219,8 @@ TEST(binaryProtoOstreamWriter,roundTripString) {
 
   std::stringstream* ios = new std::stringstream();
   google::protobuf::io::OstreamOutputStream* pb_ostream = new google::protobuf::io::OstreamOutputStream(ios);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_value);
   delete writer;

@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include <stan/proto/stan-core.pb.h>
 #include <stan/proto/sample.pb.h>
-#include <protostan/interface_callbacks/writer/binary_proto_stream_writer.hpp>
+#include <protostan/callbacks/binary_proto_stream_writer.hpp>
 #include <protostan/util/rw_delimited_pb.hpp>
 #include <fcntl.h>
 

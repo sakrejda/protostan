@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include <stan/proto/stan-core.pb.h>
 #include <stan/proto/sample.pb.h>
-#include <protostan/interface_callbacks/writer/binary_proto_stream_writer.hpp>
+#include <protostan/callbacks/binary_proto_stream_writer.hpp>
 #include <protostan/util/rw_delimited_pb.hpp>
 #include <iostream>
 #include <fstream>
@@ -24,8 +24,8 @@ TEST(binaryProtoFileWriter,roundTripKeyDouble) {
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fd = open("/tmp/test-roundTripKeyDouble.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value);
   delete writer;
@@ -52,8 +52,8 @@ TEST(binaryProtoFileWriter,roundTripKeyInteger) {
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fd = open("/tmp/test-roundTripKeyInteger.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value);
   delete writer;
@@ -79,8 +79,8 @@ TEST(binaryProtoFileWriter,roundTripKeyString) {
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fd = open("/tmp/test-roundTripKeyString.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value);
   delete writer;
@@ -106,8 +106,8 @@ TEST(binaryProtoFileWriter,roundTripKeyDoubleInt) {
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fd = open("/tmp/test-roundTripKeyDoubleInt.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value, 5);
   delete writer;
@@ -135,8 +135,8 @@ TEST(binaryProtoFileWriter,roundTripKeyDoubleIntInt) {
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fd = open("/tmp/test-roundTripKeyDoubleIntInt.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_key, original_value, 3, 2);
   delete writer;
@@ -183,8 +183,8 @@ TEST(binaryProtoFileWriter,roundTripVectorString) {
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fd = open("/tmp/test-roundTripVectorString.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_value);
   delete writer;
@@ -218,8 +218,8 @@ TEST(binaryProtoFileWriter,roundTripVectorDouble) {
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fd = open("/tmp/test-roundTripVectorDouble.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_value);
   delete writer;
@@ -246,8 +246,8 @@ TEST(binaryProtoFileWriter,roundTripString) {
   mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fd = open("/tmp/test-roundTripString.pb", O_CREAT | O_WRONLY | O_TRUNC, mode);
   google::protobuf::io::FileOutputStream* pb_ostream = new google::protobuf::io::FileOutputStream(fd);
-  stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
-    writer = new stan::interface_callbacks::writer::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
+  stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>* 
+    writer = new stan::callbacks::binary_proto_stream_writer<stan::proto::write_delimited_pb>(pb_ostream);
 
   (*writer)(original_value);
   delete writer;
