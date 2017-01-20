@@ -11,8 +11,11 @@ include_directories(${STAN_INCLUDE_DIR})
 
 # Build:
 message("STAN_INCLUDE_DIR: " ${STAN_INCLUDE_DIR})
+message("PROJECT_BINARY_DIR: " ${PROJECT_BINARY_DIR})
 file(GLOB PROTO_CPP ${PROJECT_BINARY_DIR}/src/stan/proto/*.pb.cc)
+message("PROTO_CPP: " ${PROTO_CPP})
 file(GLOB PROTO_HPP ${PROJECT_BINARY_DIR}/src/stan/proto/*.pb.h)
+message("PROTO_HPP: " ${PROTO_HPP})
 foreach(TEST_CPP IN ITEMS ${TESTS_CPP})
   get_filename_component(TEST_NAME ${TEST_CPP} NAME_WE)
   add_executable(${TEST_NAME} ${TEST_CPP} ${PROTO_CPP} ${STAN_SRC})
