@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package stan.proto;
+
+/** 
+ * Chunk of doubles.
+ */
+message DoubleChunk {
+  int64 id = 1; 
+  int64 offset = 2;
+  repeated double = 3;
+}
+
+/** 
+ * Chunk of integers.
+ */
+message IntegerChunk {
+  int64 id = 1;
+  int64 offset = 2;
+  repeated int64 = 3;
+}
+
+/** 
+ * Chunk of strings.
+ */
+message StringChunk {
+  int64 id = 1;
+  int64 offset = 2;
+  repeated string = 3;
+}
+
+
+/**
+ * Arbitrary array of... stuff.
+ */
+message Array {
+  enum InnerType {
+    DOUBLE = 0;
+    INT64 = 1;
+    STRING = 2;
+    ARRAY = 3;
+  }
+  InnerType type = 1;
+  int64 id = 2;
+  int64 n_chunks; = 3; 
+  repeated int64 indexing = 4;    /// Dimensions
+}
+
+
+
+

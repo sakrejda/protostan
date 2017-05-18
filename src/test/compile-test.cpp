@@ -1,3 +1,4 @@
+#include <iostream>
 #include "gtest/gtest.h"
 #include <stan/proto/compile.pb.h>
 #include <protostan/lang/compiler.hpp>
@@ -27,7 +28,8 @@ TEST(compile, invalidModelCompile) {
   EXPECT_EQ(stan::proto::StanCompileResponse::ERROR, response.state());
   EXPECT_STREQ("", response.cpp_code().c_str());
   EXPECT_STRNE("", response.messages().c_str());
-  EXPECT_NE(std::string::npos, response.messages().find("PARSER EXPECTED: <model declaration"));
+  std::cout << response.messages() << std::endl;
+  EXPECT_NE(std::string::npos, response.messages().find("invalid model code"));
 }
 
 TEST(compile, noSuchDistributionModelCompile) {

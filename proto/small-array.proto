@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package stan.proto;
+
+/**
+ * Single-message array of doubles.
+ */
+message DoubleArray {
+  repeated double values = 1;     /// Content
+  repeated int64 indexing = 2;    /// Dimensions
+}
+
+/**
+ * Single-message array of integers.
+ */
+message IntegerArray {
+  repeated int64 values = 1;      /// Content
+  repeated int64 indexing = 2;    /// Dimensions
+}
+
+/**
+ * Single-message array of strings.
+ */
+message StringArray {
+  repeated string values = 1;     /// Content
+  repeated int64 indexing = 2;    /// Dimensions
+}
+
+
+
+
+
