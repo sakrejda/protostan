@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package stan.proto;
+
+/** 
+  * Message for parameter names:
+  */
+message StanParamaterNames {
+  repeated string names = 1;  // Parameter names for the given ID.
+}
+
+/**
+ * Message for writer parameters:
+ */
+message StanParameterVector {
+  int64 iteration = 1;            /// Algorithm iteration.
+  repeated double values = 2;
+}
+
+
+
+
+
+
+

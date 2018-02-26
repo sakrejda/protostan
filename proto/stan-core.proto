@@ -1,7 +1,8 @@
 syntax = "proto3";
 
 package stan.proto;
-import "sample.proto";
+import "writer.proto";
+import "logger.proto";
 import "compile.proto";
 
 /** 
@@ -14,19 +15,24 @@ message StanMessage {
   enum Type {
     UNKNOWN = 0;   // Default value in case of bad set value.
     EMPTY = 1;     // Indicates there is no message.
+    MESSAGE = 2; // Any string-format message.
     COMPILE_REQUEST = 2;   // Request to compile a Stan program to C++
     COMPILE_RESPONSE = 3;  // Compilation request response, C++ code.
-    PARAMETER_OUTPUT = 4;  // Single-iteration of parameter output.
+    PARAMETER_NAMES = 4;  // Parameter names.
+    PARAMETER_VALUES = 5; // Single-iteration of parameter values
     STRING_OUTPUT = 5;    // Single string message.
     INTEGER_OUTPUT = 6;   // Single integer message.
+    LOG = 7;
   }
   Type type = 1;  // Type of actual message held.
-  StanVersion stan_version = 2; 
-  StanCompileRequest stan_compile_request = 3;   
-  StanCompileResponse stan_compile_response = 4;
-  StanParameterOutput stan_parameter_output = 5;
-  StanIntegerOutput stan_integer_output = 6;
-  StanStringOutput stan_string_output = 7;
+  int64 id = 2; // ID to associate message with (run id)
+  string stan_message = 3;
+  StanVersion stan_version = 4; 
+  StanCompileRequest stan_compile_request = 5;   
+  StanCompileResponse stan_compile_response = 6;
+  StanParameterNames stan_parameter_names = 7;
+  StanParameterVector stan_parameter_vector = 8;
+  StanLogMessage stan_log_message = 9;
 }
 
 /** 
