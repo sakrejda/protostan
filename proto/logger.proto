@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package stan.proto;
+
+/** 
+  * 
+  */
+message StanLog {
+  enum Type {
+    UNKNOWN = 0;
+    STRING = 1;
+  }
+  enum Level {
+    UNKNOWN = 0; // Default value in case of bad set value.
+    EMPTY = 1; // ... ?
+    DEBUG = 2;
+    INFO = 3;
+    WARN = 2;
+    ERROR = 3;
+    FATAL = 4;
+  }
+  Type type = 1;
+  Level level = 2;
+  string log_message = 3;
+}
+
+
+
+
+
+
+
+
