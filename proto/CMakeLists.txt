@@ -24,7 +24,7 @@ add_custom_command(
 )
 
 add_custom_target(
-  proto-headers ALL DEPENDS ${proto-hpp-list} ${proto-cpp-list} protobuf
+  proto-headers ALL DEPENDS ${proto-hpp-list} ${proto-cpp-list} #protobuf
 )
 
 set(PROTO_HPP ${proto-hpp-list} PARENT_SCOPE)

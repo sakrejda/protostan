@@ -18,6 +18,8 @@ namespace stan {
      * See schema for details and protobuf doc for how to
      * use the format.  
      */
+    template <bool (*F)(
+      google::protobuf::MessageLite*, google::protobuf::io::ZeroCopyOutputStream*)>
     class binary_proto_stream_logger : public stan::callbacks::logger {
 
     public:
