@@ -10,7 +10,7 @@ include_directories(${STAN_MATH_INCLUDE_DIR})
 include_directories(${STAN_INCLUDE_DIR})
 
 # Include Boost
-set(BOOST lib/stan/lib/stan_math/lib/boost_1.58.0)
+set(BOOST $STAN/lib/stan/lib/stan_math/lib/boost_1.66.0)
 include_directories(${BOOST})
 
 

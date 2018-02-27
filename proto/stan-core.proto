@@ -16,13 +16,13 @@ message StanMessage {
     UNKNOWN = 0;   // Default value in case of bad set value.
     EMPTY = 1;     // Indicates there is no message.
     MESSAGE = 2; // Any string-format message.
-    COMPILE_REQUEST = 2;   // Request to compile a Stan program to C++
-    COMPILE_RESPONSE = 3;  // Compilation request response, C++ code.
-    PARAMETER_NAMES = 4;  // Parameter names.
-    PARAMETER_VALUES = 5; // Single-iteration of parameter values
-    STRING_OUTPUT = 5;    // Single string message.
-    INTEGER_OUTPUT = 6;   // Single integer message.
-    LOG = 7;
+    COMPILE_REQUEST = 3;   // Request to compile a Stan program to C++
+    COMPILE_RESPONSE = 4;  // Compilation request response, C++ code.
+    PARAMETER_NAMES = 5;  // Parameter names.
+    PARAMETER_VALUES = 6; // Single-iteration of parameter values
+    STRING_OUTPUT = 7;    // Single string message.
+    INTEGER_OUTPUT = 8;   // Single integer message.
+    LOG = 9;
   }
   Type type = 1;  // Type of actual message held.
   int64 id = 2; // ID to associate message with (run id)
@@ -32,7 +32,7 @@ message StanMessage {
   StanCompileResponse stan_compile_response = 6;
   StanParameterNames stan_parameter_names = 7;
   StanParameterVector stan_parameter_vector = 8;
-  StanLogMessage stan_log_message = 9;
+  StanLog stan_log_message = 9;
 }
 
 /** 

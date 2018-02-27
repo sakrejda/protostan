@@ -5,7 +5,7 @@ package stan.proto;
 /** 
   * Message for parameter names:
   */
-message StanParamaterNames {
+message StanParameterNames {
   repeated string names = 1;  // Parameter names for the given ID.
 }
 

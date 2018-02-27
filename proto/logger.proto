@@ -7,7 +7,7 @@ package stan.proto;
   */
 message StanLog {
   enum Type {
-    UNKNOWN = 0;
+    UNSET = 0;
     STRING = 1;
   }
   enum Level {
@@ -15,9 +15,9 @@ message StanLog {
     EMPTY = 1; // ... ?
     DEBUG = 2;
     INFO = 3;
-    WARN = 2;
-    ERROR = 3;
-    FATAL = 4;
+    WARN = 4;
+    ERROR = 5;
+    FATAL = 6;
   }
   Type type = 1;
   Level level = 2;
